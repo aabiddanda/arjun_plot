@@ -23,3 +23,9 @@ def label_multipanel(axs, labels, xoff=-0.05, yoff=1.14, **kwargs):
     assert len(axs) == len(labels)
     for i, lbl in enumerate(labels):
         axs[i].text(xoff, yoff, lbl, transform=axs[i].transAxes, **kwargs)
+
+
+def rand_jitter(arr, scale=0.01):
+    """Randomly jitter an array to avoid overlapping points."""
+    stdev = scale * (max(arr) - min(arr))
+    return arr + np.random.randn(len(arr)) * stdev
