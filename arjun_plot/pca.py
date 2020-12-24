@@ -8,7 +8,7 @@ import pandas as pd
 
 
 class PCA:
-    """Working object to plot PCA results."""
+    """Object to plot PCA results."""
 
     def __init__(self):
         """Initialize the PCA object with empty fields."""
