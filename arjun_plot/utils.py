@@ -29,3 +29,4 @@ def rand_jitter(arr, scale=0.01):
     """Randomly jitter an array to avoid overlapping points."""
     stdev = scale * (max(arr) - min(arr))
     return arr + np.random.randn(len(arr)) * stdev
+
