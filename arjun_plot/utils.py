@@ -17,6 +17,13 @@ def debox(ax):
     ax.spines["right"].set_visible(False)
     ax.spines["top"].set_visible(False)
 
+def unbox(ax):
+    """Remove border and axis ticks."""
+    ax.set_xticks([])
+    ax.set_yticks([])
+    for i in ["top", "bottom", "left", "right"]:
+        ax.spines[i].set_visible(False)
+
 
 def label_multipanel(axs, labels, xoff=-0.05, yoff=1.14, **kwargs):
     """Labeling multiple axes with text labels."""
