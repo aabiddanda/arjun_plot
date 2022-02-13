@@ -22,11 +22,11 @@ class PCA:
     def read_smartpca(self, evec_file, eval_file=None):
         """Read in smartpca eigenvectors and eigenvalues."""
         df = pd.read_csv(evec_file, sep=r"\s+")
-        evecs = df.values[:,:-1]
-        pop_labels = df.values[:,-1]
+        evecs = df.values[:, :-1]
+        pop_labels = df.values[:, -1]
         indiv_labels = df.index.values
         if eval_file is None:
-            evals = test_df.columns[1:].astype(np.float32)
+            evals = df.columns[1:].astype(np.float32)
         else:
             evals = np.loadtxt(eval_file)
         self.evals = evals
@@ -134,6 +134,7 @@ class PCA:
         """ Method to literally rotate the axis"""
         from matplotlib.transforms import Affine2D
         import mpl_toolkits.axisartist.floating_axes as floating_axes
+
         pass
 
     def place_axes_at_origin(ax):
