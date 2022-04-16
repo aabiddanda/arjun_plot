@@ -49,7 +49,7 @@ def subset_Q(Q, labels, order, subset=None):
 
 def plot_k(ax, Q, lbls, order, colors, subset=None, spacing=2, bar_width=1, **kwargs):
     """Plot a single run of ADMIXTURE/STRUCTURE."""
-    # Subset if we need to
+    # Subset if we need to for different populations
     Q, labels, order = subset_Q(Q, lbls, order, subset)
 
     z = np.zeros(Q.shape[1])
@@ -100,7 +100,7 @@ def plot_k(ax, Q, lbls, order, colors, subset=None, spacing=2, bar_width=1, **kw
             Q[idx] = m
             idx += 1
 
-    # Changing things to a pandas dataframe?
+    # Changing things to a pandas dataframe for plotting
     ancestry_matrix = Q
     ancestry_matrix = pd.DataFrame(ancestry_matrix)
     ancestry_matrix.plot.bar(
@@ -108,7 +108,8 @@ def plot_k(ax, Q, lbls, order, colors, subset=None, spacing=2, bar_width=1, **kw
         stacked=True,
         legend=False,
         width=bar_width,
-        linewidth=bar_width / 10,
+        linewidth=0,
+        rasterized=True,
         color=colors,
     )
 
