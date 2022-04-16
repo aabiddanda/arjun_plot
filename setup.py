@@ -2,14 +2,14 @@
 
 from setuptools import setup
 
-version = "0.1.0"
+version = "0.0.1"
 
 required = open("requirements.txt").read().split("\n")
 
 setup(
     name="arjun_plot",
     version=version,
-    description="custom matplotlib plotting routines",
+    description="Custom matplotlib plotting routines",
     author="aabiddanda",
     author_email="aabiddanda@gmail.com",
     url="https://github.com/aabiddanda/arjun_plot",
