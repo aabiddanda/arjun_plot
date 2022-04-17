@@ -8,4 +8,3 @@ git clone https://github.com/aabiddanda/arjun_plot.git
 cd arjun_plot/
 pip install .
 ```
-

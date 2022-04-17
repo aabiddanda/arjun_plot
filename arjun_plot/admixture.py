@@ -1,11 +1,10 @@
-"""
-Copyright (C) 2017-2018 Tyler Joseph <tjoseph@cs.columbia.edu>.
+# Copyright (C) 2017-2018 Tyler Joseph <tjoseph@cs.columbia.edu>.
 
-This file is part of Dystruct.
+# This file is part of Dystruct.
 
-Modified by Arjun Biddanda <abiddanda@uchicago.edu> to be
-a library of python functions to plot bars.
-"""
+# Modified by Arjun Biddanda <abiddanda@uchicago.edu> to be
+# a library of python functions to plot bars.
+"""Functions for plotting results from ADMIXTURE/STRUCTURE."""
 
 import numpy as np
 import pandas as pd

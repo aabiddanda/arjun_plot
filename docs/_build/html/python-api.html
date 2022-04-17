@@ -31,12 +31,11 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="module-arjun_plot.admixture">
-<span id="api-documentation"></span><span id="sec-python-api"></span><h1>API Documentation<a class="headerlink" href="#module-arjun_plot.admixture" title="Permalink to this headline">¶</a></h1>
-<p>Copyright (C) 2017-2018 Tyler Joseph &lt;<a class="reference external" href="mailto:tjoseph&#37;&#52;&#48;cs&#46;columbia&#46;edu">tjoseph<span>&#64;</span>cs<span>&#46;</span>columbia<span>&#46;</span>edu</a>&gt;.</p>
-<p>This file is part of Dystruct.</p>
-<p>Modified by Arjun Biddanda &lt;<a class="reference external" href="mailto:abiddanda&#37;&#52;&#48;uchicago&#46;edu">abiddanda<span>&#64;</span>uchicago<span>&#46;</span>edu</a>&gt; to be
-a library of python functions to plot bars.</p>
+  <div class="section" id="api-documentation">
+<span id="sec-python-api"></span><h1>API Documentation<a class="headerlink" href="#api-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-arjun_plot.admixture">
+<span id="admixture-structure-plotting"></span><h2>ADMIXTURE/STRUCTURE Plotting<a class="headerlink" href="#module-arjun_plot.admixture" title="Permalink to this headline">¶</a></h2>
+<p>Functions for plotting results from ADMIXTURE/STRUCTURE.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="arjun_plot.admixture.match_one_Q">
 <span class="sig-prename descclassname"><span class="pre">arjun_plot.admixture.</span></span><span class="sig-name descname"><span class="pre">match_one_Q</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">QK</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Qprv</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/arjun_plot/admixture.html#match_one_Q"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arjun_plot.admixture.match_one_Q" title="Permalink to this definition">¶</a></dt>
@@ -55,7 +54,10 @@ a library of python functions to plot bars.</p>
 <dd><p>Subset Q matrix using a subset of labels.</p>
 </dd></dl>
 
-<span class="target" id="module-arjun_plot.pca"></span><p>Script with sets of functions to plot PCA by Arjun Biddanda.</p>
+</div>
+<div class="section" id="module-arjun_plot.pca">
+<span id="pca-plotting"></span><h2>PCA Plotting<a class="headerlink" href="#module-arjun_plot.pca" title="Permalink to this headline">¶</a></h2>
+<p>Script with sets of functions to plot PCA by Arjun Biddanda.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="arjun_plot.pca.PCA">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">arjun_plot.pca.</span></span><span class="sig-name descname"><span class="pre">PCA</span></span><a class="reference internal" href="_modules/arjun_plot/pca.html#PCA"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arjun_plot.pca.PCA" title="Permalink to this definition">¶</a></dt>
@@ -99,12 +101,6 @@ meta_dict: (<code class="xref py py-obj docutils literal notranslate"><span clas
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="arjun_plot.pca.PCA.place_axes_at_origin">
-<span class="sig-name descname"><span class="pre">place_axes_at_origin</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/arjun_plot/pca.html#PCA.place_axes_at_origin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arjun_plot.pca.PCA.place_axes_at_origin" title="Permalink to this definition">¶</a></dt>
-<dd><p>Remove the standard axes and place pseudo-axes at the origin.</p>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="arjun_plot.pca.PCA.plot_pca">
 <span class="sig-name descname"><span class="pre">plot_pca</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pc1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pc2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">medoids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">select_pops</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_lbls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'viridis'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gray'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/arjun_plot/pca.html#PCA.plot_pca"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arjun_plot.pca.PCA.plot_pca" title="Permalink to this definition">¶</a></dt>
 <dd><p>Full plotting method for PCA.</p>
@@ -122,51 +118,88 @@ meta_dict: (<code class="xref py py-obj docutils literal notranslate"><span clas
 <dd><p>Read in smartpca eigenvectors and eigenvalues.</p>
 </dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="arjun_plot.pca.PCA.rotate_axes">
-<span class="sig-name descname"><span class="pre">rotate_axes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">degree</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pc1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pc2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/arjun_plot/pca.html#PCA.rotate_axes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arjun_plot.pca.PCA.rotate_axes" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to literally rotate the axis</p>
 </dd></dl>
 
-</dd></dl>
-
-<span class="target" id="module-arjun_plot.utils"></span><p>Utility plotting functions in matplotlib.</p>
+</div>
+<div class="section" id="module-arjun_plot.utils">
+<span id="plotting-utility-functions"></span><h2>Plotting Utility Functions<a class="headerlink" href="#module-arjun_plot.utils" title="Permalink to this headline">¶</a></h2>
+<p>Utility plotting functions in matplotlib.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="arjun_plot.utils.debox">
 <span class="sig-prename descclassname"><span class="pre">arjun_plot.utils.</span></span><span class="sig-name descname"><span class="pre">debox</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/arjun_plot/utils.html#debox"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arjun_plot.utils.debox" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove the top and right spines of a plot.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ax</strong> (<em>matplotlib.pyplot.axis</em>) – Input axis.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="arjun_plot.utils.label_multipanel">
 <span class="sig-prename descclassname"><span class="pre">arjun_plot.utils.</span></span><span class="sig-name descname"><span class="pre">label_multipanel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xoff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yoff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.14</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/arjun_plot/utils.html#label_multipanel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arjun_plot.utils.label_multipanel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Labeling multiple axes with text labels.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>axs</strong> (<em>list</em>) – Input axis.</p></li>
+<li><p><strong>labels</strong> (<em>list</em>) – Input labels for each axis.</p></li>
+<li><p><strong>xoff</strong> (<em>float</em>) – x-axis offset for axis label</p></li>
+<li><p><strong>yoff</strong> (<em>float</em>) – y-axis offset for axis label</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="arjun_plot.utils.plot_yx">
 <span class="sig-prename descclassname"><span class="pre">arjun_plot.utils.</span></span><span class="sig-name descname"><span class="pre">plot_yx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/arjun_plot/utils.html#plot_yx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arjun_plot.utils.plot_yx" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot the y=x line within a matplotlib axis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ax</strong> (<em>matplotlib.pyplot.axis</em>) – Input axis.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="arjun_plot.utils.rand_jitter">
-<span class="sig-prename descclassname"><span class="pre">arjun_plot.utils.</span></span><span class="sig-name descname"><span class="pre">rand_jitter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/arjun_plot/utils.html#rand_jitter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arjun_plot.utils.rand_jitter" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">arjun_plot.utils.</span></span><span class="sig-name descname"><span class="pre">rand_jitter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/arjun_plot/utils.html#rand_jitter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arjun_plot.utils.rand_jitter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Randomly jitter an array to avoid overlapping points.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>arr</strong> (<em>numpy.array</em>) – numpy array for applying jitter.</p></li>
+<li><p><strong>scale</strong> (<em>float</em>) – scale for warping based on range in data.</p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – random seed.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="arjun_plot.utils.remove_border">
 <span class="sig-prename descclassname"><span class="pre">arjun_plot.utils.</span></span><span class="sig-name descname"><span class="pre">remove_border</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/arjun_plot/utils.html#remove_border"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arjun_plot.utils.remove_border" title="Permalink to this definition">¶</a></dt>
-<dd><p>Remove border spines completely.</p>
+<dd><p>Remove border spines completely from a matplotlib axis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ax</strong> (<em>matplotlib.pyplot.axis</em>) – Input axis.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="arjun_plot.utils.remove_ticks">
 <span class="sig-prename descclassname"><span class="pre">arjun_plot.utils.</span></span><span class="sig-name descname"><span class="pre">remove_ticks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/arjun_plot/utils.html#remove_ticks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arjun_plot.utils.remove_ticks" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove the x and y ticks for conceptual plots.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ax</strong> (<em>matplotlib.pyplot.axis</em>) – Input axis.</p>
+</dd>
+</dl>
 </dd></dl>
 
+</div>
 </div>
 
 
@@ -188,7 +221,12 @@ meta_dict: (<code class="xref py py-obj docutils literal notranslate"><span clas
 <h3>Navigation</h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">API Documentation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-arjun_plot.admixture">ADMIXTURE/STRUCTURE Plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-arjun_plot.pca">PCA Plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-arjun_plot.utils">Plotting Utility Functions</a></li>
+</ul>
+</li>
 </ul>
 
 <div class="relations">

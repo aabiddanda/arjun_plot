@@ -70,7 +70,7 @@
 <div class="viewcode-block" id="PCA.read_plinkpca"><a class="viewcode-back" href="../../python-api.html#arjun_plot.pca.PCA.read_plinkpca">[docs]</a>    <span class="k">def</span> <span class="nf">read_plinkpca</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evec_file</span><span class="p">,</span> <span class="n">eval_file</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Read in PLINK-formatted eigenvectors and eigenvalues.&quot;&quot;&quot;</span>
         <span class="n">evals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">eval_file</span><span class="p">)</span>
-        <span class="n">pcs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">evec_file</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;\s+&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="n">pcs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">evec_file</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;\s+&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;python&quot;</span><span class="p">)</span>
         <span class="n">evecs</span> <span class="o">=</span> <span class="n">pcs</span><span class="o">.</span><span class="n">values</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
         <span class="n">indiv_labels</span> <span class="o">=</span> <span class="n">pcs</span><span class="o">.</span><span class="n">values</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
         <span class="c1"># Setting the underlying values after reading this</span>
@@ -163,16 +163,15 @@
             <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;PC</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">pc2</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ax</span></div>
 
-<div class="viewcode-block" id="PCA.rotate_axes"><a class="viewcode-back" href="../../python-api.html#arjun_plot.pca.PCA.rotate_axes">[docs]</a>    <span class="k">def</span> <span class="nf">rotate_axes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">pc1</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">pc2</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Method to literally rotate the axis&quot;&quot;&quot;</span>
-        <span class="kn">from</span> <span class="nn">matplotlib.transforms</span> <span class="kn">import</span> <span class="n">Affine2D</span>
-        <span class="kn">import</span> <span class="nn">mpl_toolkits.axisartist.floating_axes</span> <span class="k">as</span> <span class="nn">floating_axes</span>
+    <span class="c1">#     def rotate_axes(self, degree, pc1=1, pc2=2):</span>
+    <span class="c1"># &quot;&quot;&quot; Method to literally rotate the axis&quot;&quot;&quot;</span>
+    <span class="c1"># from matplotlib.transforms import Affine2D</span>
+    <span class="c1"># import mpl_toolkits.axisartist.floating_axes as floating_axes</span>
+    <span class="c1"># pass</span>
 
-        <span class="k">pass</span></div>
-
-<div class="viewcode-block" id="PCA.place_axes_at_origin"><a class="viewcode-back" href="../../python-api.html#arjun_plot.pca.PCA.place_axes_at_origin">[docs]</a>    <span class="k">def</span> <span class="nf">place_axes_at_origin</span><span class="p">(</span><span class="n">ax</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Remove the standard axes and place pseudo-axes at the origin.&quot;&quot;&quot;</span>
-        <span class="k">pass</span></div>
+    <span class="c1"># def place_axes_at_origin(ax):</span>
+    <span class="c1"># &quot;&quot;&quot; Remove the standard axes and place pseudo-axes at the origin.&quot;&quot;&quot;</span>
+    <span class="c1"># pass</span>
 
 <div class="viewcode-block" id="PCA.plot_pca"><a class="viewcode-back" href="../../python-api.html#arjun_plot.pca.PCA.plot_pca">[docs]</a>    <span class="k">def</span> <span class="nf">plot_pca</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>

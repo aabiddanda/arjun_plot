@@ -36,42 +36,77 @@
 
 
 <div class="viewcode-block" id="plot_yx"><a class="viewcode-back" href="../../python-api.html#arjun_plot.utils.plot_yx">[docs]</a><span class="k">def</span> <span class="nf">plot_yx</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Plot the y=x line within a matplotlib axis.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plot the y=x line within a matplotlib axis.</span>
+
+<span class="sd">    :param matplotlib.pyplot.axis ax: Input axis.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">lims</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">([</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">(),</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()]),</span>  <span class="c1"># min of both axes</span>
         <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">([</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">(),</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()]),</span>  <span class="c1"># max of both axes</span>
     <span class="p">]</span>
-    <span class="c1"># now plot both limits against each other</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lims</span><span class="p">,</span> <span class="n">lims</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="debox"><a class="viewcode-back" href="../../python-api.html#arjun_plot.utils.debox">[docs]</a><span class="k">def</span> <span class="nf">debox</span><span class="p">(</span><span class="n">ax</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Remove the top and right spines of a plot.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Remove the top and right spines of a plot.</span>
+
+<span class="sd">    :param matplotlib.pyplot.axis ax: Input axis.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s2">&quot;right&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s2">&quot;top&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="remove_border"><a class="viewcode-back" href="../../python-api.html#arjun_plot.utils.remove_border">[docs]</a><span class="k">def</span> <span class="nf">remove_border</span><span class="p">(</span><span class="n">ax</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Remove border spines completely.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Remove border spines completely from a matplotlib axis.</span>
+
+<span class="sd">    :param matplotlib.pyplot.axis ax: Input axis.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;top&quot;</span><span class="p">,</span> <span class="s2">&quot;bottom&quot;</span><span class="p">,</span> <span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="s2">&quot;right&quot;</span><span class="p">]:</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="remove_ticks"><a class="viewcode-back" href="../../python-api.html#arjun_plot.utils.remove_ticks">[docs]</a><span class="k">def</span> <span class="nf">remove_ticks</span><span class="p">(</span><span class="n">ax</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Remove the x and y ticks for conceptual plots.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Remove the x and y ticks for conceptual plots.</span>
+
+<span class="sd">    :param matplotlib.pyplot.axis ax: Input axis.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([])</span></div>
 
 
 <div class="viewcode-block" id="label_multipanel"><a class="viewcode-back" href="../../python-api.html#arjun_plot.utils.label_multipanel">[docs]</a><span class="k">def</span> <span class="nf">label_multipanel</span><span class="p">(</span><span class="n">axs</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">xoff</span><span class="o">=-</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">yoff</span><span class="o">=</span><span class="mf">1.14</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Labeling multiple axes with text labels.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Labeling multiple axes with text labels.</span>
+
+<span class="sd">    :param list axs: Input axis.</span>
+<span class="sd">    :param list labels: Input labels for each axis.</span>
+<span class="sd">    :param float xoff: x-axis offset for axis label</span>
+<span class="sd">    :param float yoff: y-axis offset for axis label</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">axs</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">lbl</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">labels</span><span class="p">):</span>
         <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">xoff</span><span class="p">,</span> <span class="n">yoff</span><span class="p">,</span> <span class="n">lbl</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="rand_jitter"><a class="viewcode-back" href="../../python-api.html#arjun_plot.utils.rand_jitter">[docs]</a><span class="k">def</span> <span class="nf">rand_jitter</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Randomly jitter an array to avoid overlapping points.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="rand_jitter"><a class="viewcode-back" href="../../python-api.html#arjun_plot.utils.rand_jitter">[docs]</a><span class="k">def</span> <span class="nf">rand_jitter</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Randomly jitter an array to avoid overlapping points.</span>
+
+<span class="sd">    :param numpy.array arr: numpy array for applying jitter.</span>
+<span class="sd">    :param float scale: scale for warping based on range in data.</span>
+<span class="sd">    :param int seed: random seed.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">scale</span> <span class="o">&gt;</span> <span class="mf">0.0</span>
+    <span class="k">if</span> <span class="n">seed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">type</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">int</span>
+        <span class="k">assert</span> <span class="n">seed</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
     <span class="n">stdev</span> <span class="o">=</span> <span class="n">scale</span> <span class="o">*</span> <span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span> <span class="o">-</span> <span class="nb">min</span><span class="p">(</span><span class="n">arr</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">arr</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">))</span> <span class="o">*</span> <span class="n">stdev</span></div>
 </pre></div>

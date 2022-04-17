@@ -37,7 +37,7 @@ class PCA:
     def read_plinkpca(self, evec_file, eval_file):
         """Read in PLINK-formatted eigenvectors and eigenvalues."""
         evals = np.loadtxt(eval_file)
-        pcs = pd.read_csv(evec_file, sep=r"\s+", header=None)
+        pcs = pd.read_csv(evec_file, sep=r"\s+", header=None, engine="python")
         evecs = pcs.values[:, 2:].astype(np.float32)
         indiv_labels = pcs.values[:, 0].astype(str)
         # Setting the underlying values after reading this
@@ -130,16 +130,15 @@ class PCA:
             ax.set_ylabel(r"PC%d" % pc2, **kwargs)
         return ax
 
-    def rotate_axes(self, degree, pc1=1, pc2=2):
-        """ Method to literally rotate the axis"""
-        from matplotlib.transforms import Affine2D
-        import mpl_toolkits.axisartist.floating_axes as floating_axes
+    #     def rotate_axes(self, degree, pc1=1, pc2=2):
+    # """ Method to literally rotate the axis"""
+    # from matplotlib.transforms import Affine2D
+    # import mpl_toolkits.axisartist.floating_axes as floating_axes
+    # pass
 
-        pass
-
-    def place_axes_at_origin(ax):
-        """ Remove the standard axes and place pseudo-axes at the origin."""
-        pass
+    # def place_axes_at_origin(ax):
+    # """ Remove the standard axes and place pseudo-axes at the origin."""
+    # pass
 
     def plot_pca(
         self,
