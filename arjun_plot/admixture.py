@@ -1,11 +1,10 @@
-"""
-Copyright (C) 2017-2018 Tyler Joseph <tjoseph@cs.columbia.edu>.
+# Copyright (C) 2017-2018 Tyler Joseph <tjoseph@cs.columbia.edu>.
 
-This file is part of Dystruct.
+# This file is part of Dystruct.
 
-Modified by Arjun Biddanda <abiddanda@uchicago.edu> to be
-a library of python functions to plot bars.
-"""
+# Modified by Arjun Biddanda <abiddanda@uchicago.edu> to be
+# a library of python functions to plot bars.
+"""Functions for plotting results from ADMIXTURE/STRUCTURE."""
 
 import numpy as np
 import pandas as pd
@@ -49,7 +48,7 @@ def subset_Q(Q, labels, order, subset=None):
 
 def plot_k(ax, Q, lbls, order, colors, subset=None, spacing=2, bar_width=1, **kwargs):
     """Plot a single run of ADMIXTURE/STRUCTURE."""
-    # Subset if we need to
+    # Subset if we need to for different populations
     Q, labels, order = subset_Q(Q, lbls, order, subset)
 
     z = np.zeros(Q.shape[1])
@@ -100,7 +99,7 @@ def plot_k(ax, Q, lbls, order, colors, subset=None, spacing=2, bar_width=1, **kw
             Q[idx] = m
             idx += 1
 
-    # Changing things to a pandas dataframe?
+    # Changing things to a pandas dataframe for plotting
     ancestry_matrix = Q
     ancestry_matrix = pd.DataFrame(ancestry_matrix)
     ancestry_matrix.plot.bar(
@@ -108,7 +107,8 @@ def plot_k(ax, Q, lbls, order, colors, subset=None, spacing=2, bar_width=1, **kw
         stacked=True,
         legend=False,
         width=bar_width,
-        linewidth=bar_width / 10,
+        linewidth=0,
+        rasterized=True,
         color=colors,
     )
 

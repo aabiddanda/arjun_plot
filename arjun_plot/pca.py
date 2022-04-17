@@ -19,21 +19,25 @@ class PCA:
         self.meta_data = None
 
     # --- I/O Routines  ---#
-    def read_smart_pca(self, evec_file, eval_file=None):
+    def read_smartpca(self, evec_file, eval_file=None):
         """Read in smartpca eigenvectors and eigenvalues."""
-        test_df = pd.read_csv(evec_file, sep=r"\s+")
-        evecs = test_df.values[:, :-1]
+        df = pd.read_csv(evec_file, sep=r"\s+")
+        evecs = df.values[:, :-1]
+        pop_labels = df.values[:, -1]
+        indiv_labels = df.index.values
         if eval_file is None:
-            evals = test_df.columns[1:].astype(np.float32)
+            evals = df.columns[1:].astype(np.float32)
         else:
             evals = np.loadtxt(eval_file)
         self.evals = evals
         self.evecs = evecs
+        self.indiv_labels = indiv_labels
+        self.pop_labels = pop_labels
 
-    def read_plink_pca(self, evec_file, eval_file):
+    def read_plinkpca(self, evec_file, eval_file):
         """Read in PLINK-formatted eigenvectors and eigenvalues."""
         evals = np.loadtxt(eval_file)
-        pcs = pd.read_csv(evec_file, sep=r"\s+", header=None)
+        pcs = pd.read_csv(evec_file, sep=r"\s+", header=None, engine="python")
         evecs = pcs.values[:, 2:].astype(np.float32)
         indiv_labels = pcs.values[:, 0].astype(str)
         # Setting the underlying values after reading this
@@ -67,7 +71,7 @@ class PCA:
         assert np.all(np.isin(self.indiv_labels, keys))
         self.meta_data = meta_dict
 
-    def sanity_check_data(self):
+    def check_data(self):
         """Sanity checks on dimensionality of data prior to running any plotting routines."""
         assert self.indiv_labels.size == self.pop_labels.size
         assert self.indiv_labels.size == self.evecs.shape[0]
@@ -125,6 +129,16 @@ class PCA:
             ax.set_xlabel(r"PC%d" % pc1, **kwargs)
             ax.set_ylabel(r"PC%d" % pc2, **kwargs)
         return ax
+
+    #     def rotate_axes(self, degree, pc1=1, pc2=2):
+    # """ Method to literally rotate the axis"""
+    # from matplotlib.transforms import Affine2D
+    # import mpl_toolkits.axisartist.floating_axes as floating_axes
+    # pass
+
+    # def place_axes_at_origin(ax):
+    # """ Remove the standard axes and place pseudo-axes at the origin."""
+    # pass
 
     def plot_pca(
         self,

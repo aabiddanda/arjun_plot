@@ -1,2 +1,4 @@
 sandbox/
 .python-version
+build/
+*.egg-info/
