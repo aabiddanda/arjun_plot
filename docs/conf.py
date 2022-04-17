@@ -13,7 +13,7 @@
 import os
 import sys
 sys.path.insert(0, os.path.abspath('..'))
-
+print(sys.path)
 
 # -- Project information -----------------------------------------------------
 
@@ -34,9 +34,7 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
     "sphinx.ext.githubpages",
-    "sphinx.ext.mathjax",
     "sphinx.ext.viewcode",
-    "sphinx.ext.todo",
 ]
 
 todo_include_todos = True

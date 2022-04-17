@@ -1,0 +1,144 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>arjun_plot.utils &#8212; arjun_plot 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for arjun_plot.utils</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Utility plotting functions in matplotlib.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<div class="viewcode-block" id="plot_yx"><a class="viewcode-back" href="../../python-api.html#arjun_plot.utils.plot_yx">[docs]</a><span class="k">def</span> <span class="nf">plot_yx</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Plot the y=x line within a matplotlib axis.&quot;&quot;&quot;</span>
+    <span class="n">lims</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">([</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">(),</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()]),</span>  <span class="c1"># min of both axes</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">([</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">(),</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()]),</span>  <span class="c1"># max of both axes</span>
+    <span class="p">]</span>
+    <span class="c1"># now plot both limits against each other</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lims</span><span class="p">,</span> <span class="n">lims</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="debox"><a class="viewcode-back" href="../../python-api.html#arjun_plot.utils.debox">[docs]</a><span class="k">def</span> <span class="nf">debox</span><span class="p">(</span><span class="n">ax</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Remove the top and right spines of a plot.&quot;&quot;&quot;</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s2">&quot;right&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s2">&quot;top&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="remove_border"><a class="viewcode-back" href="../../python-api.html#arjun_plot.utils.remove_border">[docs]</a><span class="k">def</span> <span class="nf">remove_border</span><span class="p">(</span><span class="n">ax</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Remove border spines completely.&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;top&quot;</span><span class="p">,</span> <span class="s2">&quot;bottom&quot;</span><span class="p">,</span> <span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="s2">&quot;right&quot;</span><span class="p">]:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="remove_ticks"><a class="viewcode-back" href="../../python-api.html#arjun_plot.utils.remove_ticks">[docs]</a><span class="k">def</span> <span class="nf">remove_ticks</span><span class="p">(</span><span class="n">ax</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Remove the x and y ticks for conceptual plots.&quot;&quot;&quot;</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([])</span></div>
+
+
+<div class="viewcode-block" id="label_multipanel"><a class="viewcode-back" href="../../python-api.html#arjun_plot.utils.label_multipanel">[docs]</a><span class="k">def</span> <span class="nf">label_multipanel</span><span class="p">(</span><span class="n">axs</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">xoff</span><span class="o">=-</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">yoff</span><span class="o">=</span><span class="mf">1.14</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Labeling multiple axes with text labels.&quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">axs</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">lbl</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">labels</span><span class="p">):</span>
+        <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">xoff</span><span class="p">,</span> <span class="n">yoff</span><span class="p">,</span> <span class="n">lbl</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="rand_jitter"><a class="viewcode-back" href="../../python-api.html#arjun_plot.utils.rand_jitter">[docs]</a><span class="k">def</span> <span class="nf">rand_jitter</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Randomly jitter an array to avoid overlapping points.&quot;&quot;&quot;</span>
+    <span class="n">stdev</span> <span class="o">=</span> <span class="n">scale</span> <span class="o">*</span> <span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span> <span class="o">-</span> <span class="nb">min</span><span class="p">(</span><span class="n">arr</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">arr</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">))</span> <span class="o">*</span> <span class="n">stdev</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">arjun_plot</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../python-api.html">API Documentation</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022, Arjun Biddanda.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

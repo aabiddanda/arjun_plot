@@ -1,0 +1,240 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>API Documentation &#8212; arjun_plot 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Installation" href="install.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-arjun_plot.admixture">
+<span id="api-documentation"></span><span id="sec-python-api"></span><h1>API Documentation<a class="headerlink" href="#module-arjun_plot.admixture" title="Permalink to this headline">¶</a></h1>
+<p>Copyright (C) 2017-2018 Tyler Joseph &lt;<a class="reference external" href="mailto:tjoseph&#37;&#52;&#48;cs&#46;columbia&#46;edu">tjoseph<span>&#64;</span>cs<span>&#46;</span>columbia<span>&#46;</span>edu</a>&gt;.</p>
+<p>This file is part of Dystruct.</p>
+<p>Modified by Arjun Biddanda &lt;<a class="reference external" href="mailto:abiddanda&#37;&#52;&#48;uchicago&#46;edu">abiddanda<span>&#64;</span>uchicago<span>&#46;</span>edu</a>&gt; to be
+a library of python functions to plot bars.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="arjun_plot.admixture.match_one_Q">
+<span class="sig-prename descclassname"><span class="pre">arjun_plot.admixture.</span></span><span class="sig-name descname"><span class="pre">match_one_Q</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">QK</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Qprv</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/arjun_plot/admixture.html#match_one_Q"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arjun_plot.admixture.match_one_Q" title="Permalink to this definition">¶</a></dt>
+<dd><p>Match the columns (populations) of Q to Qprv.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="arjun_plot.admixture.plot_k">
+<span class="sig-prename descclassname"><span class="pre">arjun_plot.admixture.</span></span><span class="sig-name descname"><span class="pre">plot_k</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lbls</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spacing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bar_width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/arjun_plot/admixture.html#plot_k"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arjun_plot.admixture.plot_k" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot a single run of ADMIXTURE/STRUCTURE.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="arjun_plot.admixture.subset_Q">
+<span class="sig-prename descclassname"><span class="pre">arjun_plot.admixture.</span></span><span class="sig-name descname"><span class="pre">subset_Q</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/arjun_plot/admixture.html#subset_Q"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arjun_plot.admixture.subset_Q" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subset Q matrix using a subset of labels.</p>
+</dd></dl>
+
+<span class="target" id="module-arjun_plot.pca"></span><p>Script with sets of functions to plot PCA by Arjun Biddanda.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="arjun_plot.pca.PCA">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">arjun_plot.pca.</span></span><span class="sig-name descname"><span class="pre">PCA</span></span><a class="reference internal" href="_modules/arjun_plot/pca.html#PCA"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arjun_plot.pca.PCA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object to plot PCA results.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="arjun_plot.pca.PCA.add_meta_data">
+<span class="sig-name descname"><span class="pre">add_meta_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">meta_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/arjun_plot/pca.html#PCA.add_meta_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arjun_plot.pca.PCA.add_meta_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add in metadata for each sample using a dict.</p>
+<p>Args:
+meta_dict: (<code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code>): dictionary mapping indivId -&gt; [meta_dict]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="arjun_plot.pca.PCA.add_poplabels">
+<span class="sig-name descname"><span class="pre">add_poplabels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pop_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/arjun_plot/pca.html#PCA.add_poplabels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arjun_plot.pca.PCA.add_poplabels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load population labels using a dictionary mapping indivID -&gt; popID.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="arjun_plot.pca.PCA.calc_percent_var">
+<span class="sig-name descname"><span class="pre">calc_percent_var</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pc1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pc2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extrapolate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/arjun_plot/pca.html#PCA.calc_percent_var"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arjun_plot.pca.PCA.calc_percent_var" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the proportion of variation explained by a PC.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="arjun_plot.pca.PCA.check_data">
+<span class="sig-name descname"><span class="pre">check_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/arjun_plot/pca.html#PCA.check_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arjun_plot.pca.PCA.check_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sanity checks on dimensionality of data prior to running any plotting routines.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="arjun_plot.pca.PCA.extract_medoid_pops_all">
+<span class="sig-name descname"><span class="pre">extract_medoid_pops_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_pc=5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ctr_func=&lt;function</span> <span class="pre">median&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/arjun_plot/pca.html#PCA.extract_medoid_pops_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arjun_plot.pca.PCA.extract_medoid_pops_all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract the medoid position across all PCs for a given population.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="arjun_plot.pca.PCA.pca_axis_labels">
+<span class="sig-name descname"><span class="pre">pca_axis_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pc1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pc2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extrapolate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/arjun_plot/pca.html#PCA.pca_axis_labels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arjun_plot.pca.PCA.pca_axis_labels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot PCA axis labels.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="arjun_plot.pca.PCA.place_axes_at_origin">
+<span class="sig-name descname"><span class="pre">place_axes_at_origin</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/arjun_plot/pca.html#PCA.place_axes_at_origin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arjun_plot.pca.PCA.place_axes_at_origin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the standard axes and place pseudo-axes at the origin.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="arjun_plot.pca.PCA.plot_pca">
+<span class="sig-name descname"><span class="pre">plot_pca</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pc1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pc2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">medoids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">select_pops</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_lbls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'viridis'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gray'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/arjun_plot/pca.html#PCA.plot_pca"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arjun_plot.pca.PCA.plot_pca" title="Permalink to this definition">¶</a></dt>
+<dd><p>Full plotting method for PCA.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="arjun_plot.pca.PCA.read_plinkpca">
+<span class="sig-name descname"><span class="pre">read_plinkpca</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">evec_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eval_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/arjun_plot/pca.html#PCA.read_plinkpca"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arjun_plot.pca.PCA.read_plinkpca" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read in PLINK-formatted eigenvectors and eigenvalues.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="arjun_plot.pca.PCA.read_smartpca">
+<span class="sig-name descname"><span class="pre">read_smartpca</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">evec_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eval_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/arjun_plot/pca.html#PCA.read_smartpca"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arjun_plot.pca.PCA.read_smartpca" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read in smartpca eigenvectors and eigenvalues.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="arjun_plot.pca.PCA.rotate_axes">
+<span class="sig-name descname"><span class="pre">rotate_axes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">degree</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pc1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pc2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/arjun_plot/pca.html#PCA.rotate_axes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arjun_plot.pca.PCA.rotate_axes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to literally rotate the axis</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-arjun_plot.utils"></span><p>Utility plotting functions in matplotlib.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="arjun_plot.utils.debox">
+<span class="sig-prename descclassname"><span class="pre">arjun_plot.utils.</span></span><span class="sig-name descname"><span class="pre">debox</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/arjun_plot/utils.html#debox"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arjun_plot.utils.debox" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the top and right spines of a plot.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="arjun_plot.utils.label_multipanel">
+<span class="sig-prename descclassname"><span class="pre">arjun_plot.utils.</span></span><span class="sig-name descname"><span class="pre">label_multipanel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xoff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yoff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.14</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/arjun_plot/utils.html#label_multipanel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arjun_plot.utils.label_multipanel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Labeling multiple axes with text labels.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="arjun_plot.utils.plot_yx">
+<span class="sig-prename descclassname"><span class="pre">arjun_plot.utils.</span></span><span class="sig-name descname"><span class="pre">plot_yx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/arjun_plot/utils.html#plot_yx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arjun_plot.utils.plot_yx" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the y=x line within a matplotlib axis.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="arjun_plot.utils.rand_jitter">
+<span class="sig-prename descclassname"><span class="pre">arjun_plot.utils.</span></span><span class="sig-name descname"><span class="pre">rand_jitter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/arjun_plot/utils.html#rand_jitter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arjun_plot.utils.rand_jitter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Randomly jitter an array to avoid overlapping points.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="arjun_plot.utils.remove_border">
+<span class="sig-prename descclassname"><span class="pre">arjun_plot.utils.</span></span><span class="sig-name descname"><span class="pre">remove_border</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/arjun_plot/utils.html#remove_border"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arjun_plot.utils.remove_border" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove border spines completely.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="arjun_plot.utils.remove_ticks">
+<span class="sig-prename descclassname"><span class="pre">arjun_plot.utils.</span></span><span class="sig-name descname"><span class="pre">remove_ticks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/arjun_plot/utils.html#remove_ticks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arjun_plot.utils.remove_ticks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the x and y ticks for conceptual plots.</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">arjun_plot</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API Documentation</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="install.html" title="previous chapter">Installation</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022, Arjun Biddanda.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/python-api.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
