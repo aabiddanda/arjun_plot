@@ -3,3 +3,4 @@ sandbox/
 build/
 *.egg-info/
 .coverage
+docs/_build/
