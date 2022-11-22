@@ -8,7 +8,7 @@ import pandas as pd
 
 
 class PCA:
-    """Object to plot PCA results."""
+    """Custom PCA plotting object."""
 
     def __init__(self):
         """Initialize the PCA object with empty fields."""
@@ -18,9 +18,14 @@ class PCA:
         self.evals = None
         self.meta_data = None
 
-    # --- I/O Routines  ---#
     def read_smartpca(self, evec_file, eval_file=None):
-        """Read in smartpca eigenvectors and eigenvalues."""
+        """Read eigenvectors and eigenvalues in SmartPCA format.
+
+        Args:
+            evec_file (`string`): File with eigenvectors.
+            eval_file (`string`): File with eigenvalues across PCs.
+
+        """
         df = pd.read_csv(evec_file, sep=r"\s+")
         evecs = df.values[:, :-1]
         pop_labels = df.values[:, -1]

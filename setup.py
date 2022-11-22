@@ -9,7 +9,7 @@ required = open("requirements.txt").read().split("\n")
 setup(
     name="arjun_plot",
     version=version,
-    description="Custom matplotlib plotting routines",
+    description="Matplotlib helper functions from Arjun Biddanda.",
     author="aabiddanda",
     author_email="aabiddanda@gmail.com",
     url="https://github.com/aabiddanda/arjun_plot",

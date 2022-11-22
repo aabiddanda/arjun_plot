@@ -4,19 +4,24 @@ API Documentation
 ==================
 
 
-ADMIXTURE/STRUCTURE Plotting
+ADMIXTURE 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. automodule:: arjun_plot.admixture
    :members:
 
 
-PCA Plotting 
-~~~~~~~~~~~~
+Principal Components Analysis 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. automodule:: arjun_plot.pca
    :members:
 
 
-Plotting Utility Functions 
+Statistical Genetics / GWAS 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. automodule:: arjun_plot.statgen
+   :members:
+
+Utility Functions 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. automodule:: arjun_plot.utils
    :members:

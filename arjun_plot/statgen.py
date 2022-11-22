@@ -6,14 +6,10 @@ HUMAN_CHROMS = [str(i) for i in range(1, 23)] + ["X"]
 
 
 def qqplot_pval(ax, pvals, **kwargs):
-    """Create a QQ-plot.
+    """Create a QQ-plot from a collection of pvalues.
 
-    Args:
-        ax (matplotlib.axis): A matplotlib axis object to plot.
-        pvals (np.array): numpy array of p-values.
-
-    Returns:
-        ax (matplotlib.axis): axis containing the qq-plot.
+    :param matplotlib.pyplot.axis ax: Input axis.
+    :param np.array pvals: numpy array of p-values.
 
     """
     assert np.all(pvals >= 0) and np.all(pvals <= 1)
@@ -21,7 +17,7 @@ def qqplot_pval(ax, pvals, **kwargs):
     # Calculate the expected quantiles of the p-value distribution
     exp_q = np.arange(1, m + 1) / (m + 1.0)
     true_q = np.sort(pvals)
-    # transform them to the negative quantiles
+    # transform them to the negative log10 quantiles.
     exp_q = -np.log10(exp_q)
     true_q = -np.log10(true_q)
     # generate the plot as a scatter plot
