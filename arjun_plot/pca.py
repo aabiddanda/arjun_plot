@@ -21,9 +21,8 @@ class PCA:
     def read_smartpca(self, evec_file, eval_file=None):
         """Read eigenvectors and eigenvalues in SmartPCA format.
 
-        Args:
-            evec_file (`string`): File with eigenvectors.
-            eval_file (`string`): File with eigenvalues across PCs.
+        :param string evec_file: File with eigenvectors in smartPCA format.
+        :param string eval_file: File with eigenvalues in smartpca format.
 
         """
         df = pd.read_csv(evec_file, sep=r"\s+")
@@ -40,7 +39,11 @@ class PCA:
         self.pop_labels = pop_labels
 
     def read_plinkpca(self, evec_file, eval_file):
-        """Read in PLINK-formatted eigenvectors and eigenvalues."""
+        """Read in PLINK-formatted eigenvectors and eigenvalues.
+
+        :param string evec_file: File with eigenvectors in plink format.
+        :param string eval_file: File with eigenvalues in plink format.
+        """
         evals = np.loadtxt(eval_file)
         pcs = pd.read_csv(evec_file, sep=r"\s+", header=None, engine="python")
         evecs = pcs.values[:, 2:].astype(np.float32)
@@ -52,7 +55,10 @@ class PCA:
 
     # --- Data Management and Population Management --- #
     def add_poplabels(self, pop_dict, error=None):
-        """Load population labels using a dictionary mapping indivID -> popID."""
+        """Load population labels using a dictionary mapping indivID -> popID.
+
+        :param dict pop_dict: dictionary mapping individual IDs to population IDs.
+        """
         pop_labels = []
         for i in self.indiv_labels:
             try:
@@ -67,8 +73,10 @@ class PCA:
     def add_meta_data(self, meta_dict):
         """Add in metadata for each sample using a dict.
 
-        Args:
-        meta_dict: (:obj:`dict`): dictionary mapping indivId -> [meta_dict]
+        The metadata contained by the dictionary can also be
+        in a dictionary format with keys indicating language family, region, etc.
+
+        :param dict meta_dict: dictionary mapping indivId -> {meta_dict}.
 
         """
         # Check that each individual has a key in the meta data
@@ -77,7 +85,7 @@ class PCA:
         self.meta_data = meta_dict
 
     def check_data(self):
-        """Sanity checks on dimensionality of data prior to running any plotting routines."""
+        """Check dimensionality of data prior to running any plotting routines."""
         assert self.indiv_labels.size == self.pop_labels.size
         assert self.indiv_labels.size == self.evecs.shape[0]
         assert self.evecs.shape[1] >= 2
@@ -88,7 +96,13 @@ class PCA:
             assert np.all(np.isin(self.indiv_labels, keys))
 
     def calc_percent_var(self, pc1=1, pc2=2, extrapolate=False):
-        """Calculate the proportion of variation explained by a PC."""
+        """Calculate the proportion of variation explained by a PC.
+
+        :param int pc1: first principal component.
+        :param int pc2: second principal component.
+        :param bool extrapolate: extrapolate if full-rank eigenvalues are not available.
+
+        """
         pc1 = pc1 - 1
         pc2 = pc2 - 1
         assert pc1 != pc2
@@ -109,8 +123,31 @@ class PCA:
         prop_var = np.array(self.evals) / sum_var
         return (prop_var[pc1], prop_var[pc2])
 
+    def pca_axis_labels(self, ax, pc1=1, pc2=2, extrapolate=False, **kwargs):
+        """Plot PCA axis labels.
+
+        :param matplotlib.pyplot.axis ax: axis to generate plot from.
+        :param int pc1: first principal component  plotted.
+        :param int pc2: second principal component plotted.
+        :param bool extrapolate: extrapolate if full-rank eigenvalues are not available.
+
+        """
+        if self.evals is not None:
+            vA, vB = self.calc_percent_var(pc1, pc2, extrapolate)
+            ax.set_xlabel(r"PC%d (%0.2f%%)" % (pc1, vA * 100), **kwargs)
+            ax.set_ylabel(r"PC%d (%0.2f%%)" % (pc2, vB * 100), **kwargs)
+        else:
+            ax.set_xlabel(r"PC%d" % pc1, **kwargs)
+            ax.set_ylabel(r"PC%d" % pc2, **kwargs)
+        return ax
+
     def extract_medoid_pops_all(self, max_pc=5, ctr_func=np.median):
-        """Extract the medoid position across all PCs for a given population."""
+        """Extract the medoid position across all PCs for a given population.
+
+        :param int max_pc: maximum number of PCs to calculate population centroid.
+        :param np.function ctr_func: centroid function for population values on a PC.
+
+        """
         assert self.pop_labels is not None
         npcs = np.min([self.evals.size, max_pc])
         uniq_pops = np.unique(self.pop_labels)
@@ -123,17 +160,6 @@ class PCA:
                 ctrs[i] = ctr_func(cur_pc_pop)
             medoid_dict[u] = ctrs
         return medoid_dict
-
-    def pca_axis_labels(self, ax, pc1=1, pc2=2, extrapolate=False, **kwargs):
-        """Plot PCA axis labels."""
-        if self.evals is not None:
-            vA, vB = self.calc_percent_var(pc1, pc2, extrapolate)
-            ax.set_xlabel(r"PC%d (%0.2f%%)" % (pc1, vA * 100), **kwargs)
-            ax.set_ylabel(r"PC%d (%0.2f%%)" % (pc2, vB * 100), **kwargs)
-        else:
-            ax.set_xlabel(r"PC%d" % pc1, **kwargs)
-            ax.set_ylabel(r"PC%d" % pc2, **kwargs)
-        return ax
 
     #     def rotate_axes(self, degree, pc1=1, pc2=2):
     # """ Method to literally rotate the axis"""

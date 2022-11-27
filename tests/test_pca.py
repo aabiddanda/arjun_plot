@@ -1,11 +1,13 @@
+"""Test PCA functions."""
 import pytest
 import matplotlib.pyplot as plt
-from arjun_plot import pca
+from arjun_plot.pca import PCA
 
 
 def test_read_smartpca():
     """Read a test smartpca output."""
-    pass
+    pca = PCA()
+    pca.read_smartpca(evec_file="tests/test_data/test_smartpca.evec")
 
 
 def test_read_plinkpca():
@@ -14,7 +16,7 @@ def test_read_plinkpca():
 
 
 def test_add_poplabels():
-    """Testing adding some population labels. """
+    """Testing adding some population labels."""
     pass
 
 

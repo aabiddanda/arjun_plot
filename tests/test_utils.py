@@ -1,3 +1,4 @@
+"""Test ancillary plotting utilities."""
 import pytest
 import matplotlib.pyplot as plt
 from arjun_plot import utils
