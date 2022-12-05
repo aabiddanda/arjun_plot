@@ -1,4 +1,4 @@
-"""Script with sets of functions to plot PCA by Arjun Biddanda."""
+"""Library of functions to plot PCA by Arjun Biddanda."""
 
 import numpy as np
 from matplotlib import cm
@@ -53,7 +53,6 @@ class PCA:
         self.evals = evals
         self.indiv_labels = indiv_labels
 
-    # --- Data Management and Population Management --- #
     def add_poplabels(self, pop_dict, error=None):
         """Load population labels using a dictionary mapping indivID -> popID.
 
@@ -65,7 +64,7 @@ class PCA:
                 pop_labels.append(pop_dict[i])
             except KeyError:
                 if error is None:
-                    raise KeyError("Individual label does not have a population label")
+                    raise KeyError(f"Individual label {i} does not have a population label")
                 else:
                     pop_labels.append(error)
         self.pop_labels = np.array(pop_labels).astype(str)
