@@ -64,7 +64,9 @@ class PCA:
                 pop_labels.append(pop_dict[i])
             except KeyError:
                 if error is None:
-                    raise KeyError(f"Individual label {i} does not have a population label")
+                    raise KeyError(
+                        f"Individual label {i} does not have a population label"
+                    )
                 else:
                     pop_labels.append(error)
         self.pop_labels = np.array(pop_labels).astype(str)
@@ -183,7 +185,7 @@ class PCA:
         base_color="gray",
         legend=True,
         eps=0.05,
-        **kwargs
+        **kwargs,
     ):
         """Full plotting method for PCA."""
         texts = []
@@ -233,6 +235,6 @@ class PCA:
             self.evecs[:, pc2 - 1],
             color=base_color,
             zorder=-10,
-            **kwargs
+            **kwargs,
         )
         return ax

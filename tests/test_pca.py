@@ -31,16 +31,19 @@ def base_pca_obj():
 
 @pytest.fixture
 def good_pop_dict():
+    """Good population label dictionary."""
     return {"A": "popX", "B": "popX", "C": "popY"}
 
 
 @pytest.fixture
 def incomplete_pop_dict():
+    """Incomplete population dictionary."""
     return {"A": "popX", "B": "popX"}
 
 
 @pytest.fixture
 def incorrect_pop_dict():
+    """Incorrect population dictionary."""
     return {"A": "popX", "B": "popX", "D": "popZ"}
 
 
