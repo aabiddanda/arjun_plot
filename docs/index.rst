@@ -9,6 +9,7 @@ Welcome to arjun_plot's documentation!
 .. toctree::
    :maxdepth: 2
 
+   introduction
    install
    python-api
 
