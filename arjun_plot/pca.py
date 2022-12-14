@@ -162,15 +162,13 @@ class PCA:
             medoid_dict[u] = ctrs
         return medoid_dict
 
-    #     def rotate_axes(self, degree, pc1=1, pc2=2):
-    # """ Method to literally rotate the axis"""
-    # from matplotlib.transforms import Affine2D
-    # import mpl_toolkits.axisartist.floating_axes as floating_axes
-    # pass
+    def rotate_axes(self, ax, degree, pc1=1, pc2=2, **kwargs):
+        """Rotating the axis for a PCA plot."""
+        from matplotlib.transforms import Affine2D
 
-    # def place_axes_at_origin(ax):
-    # """ Remove the standard axes and place pseudo-axes at the origin."""
-    # pass
+        tr = Affine2D().rotate_deg(degree)
+        ax = self.plot_pca(ax, pc1=pc1, pc2=pc2, transform=tr + ax.transData, **kwargs)
+        return ax
 
     def plot_pca(
         self,
