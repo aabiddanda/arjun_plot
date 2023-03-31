@@ -115,7 +115,7 @@ def plot_k(ax, Q, lbls, order, colors, subset=None, spacing=2, bar_width=1, **kw
     # Setting plotting parameters
     ax.set_yticklabels([])
     ax.set_xticklabels(labels_ordered, **kwargs)
-    ax.tick_params(axis=u"both", which=u"both", length=0)
+    ax.tick_params(axis="both", which="both", length=0)
     ax.patch.set_visible(False)
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
