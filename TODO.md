@@ -1,3 +1,2 @@
-
-1. General plots for spatial data
-2. Manhattan plots for GWAS
+- General plots for spatial data
+- Include common stylesheets for plots useful in talks with font-scaling
