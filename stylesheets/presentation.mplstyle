@@ -6,7 +6,7 @@ xtick.labelsize : 16
 ytick.labelsize : 16
 lines.linewidth : 2
 lines.linestyle: -
-font.sans-serif: Arial
+font.sans-serif: FiraSans
 figure.facecolor: w
 figure.autolayout: True
 lines.antialiased: True
