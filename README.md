@@ -1,8 +1,8 @@
-# arjun_plot: customized plotting routines in matplotlib 
+# arjun_plot: customized plotting routines in matplotlib
 
 ## Rationale
 
-Over the course of doing research, I've had to generate **many** plots. Typically these have been using custom `matplotlib` routines. The package here has specific classes and modules which help with some common routines in plotting of genetic data.  
+Over the course of doing research, I've had to generate **many** plots. Typically these have been using custom `matplotlib` routines. The package here has specific classes and modules which help with some common routines in plotting of genetic data.
 
 ## Modules
 
