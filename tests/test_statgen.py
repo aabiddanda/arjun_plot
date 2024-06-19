@@ -30,6 +30,7 @@ def test_locus_plot():
     _, ax = plt.subplots(1, 1, figsize=(4, 4))
     np.random.seed(42)
     nsamples = 500
-    geno = np.random.binomial(2, 0.05, size=nsamples)
+    geno = np.random.binomial(2, 0.1, size=nsamples)
     pheno = geno * 0.1 + np.random.normal(size=nsamples, scale=0.5)
-    locus_plot(ax, geno, pheno)
+    _, n, _ = locus_plot(ax, geno, pheno)
+    assert np.sum(n) == nsamples

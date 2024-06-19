@@ -150,7 +150,7 @@ def locus_plot(ax, genotypes, phenotypes, boxplot=True, **kwargs):
 
     Args:
         ax (matplotlib.axis): A matplotlib axis object to plot.
-        genotypes (numpy.array): genotypes of each individual.
+        genotypes (numpy.array): genotypes of each individual
         phenotypes (numpy.array): phenotypes of each individual.
         boxplot (bool): display as a boxplot or violinplot
     Returns:
