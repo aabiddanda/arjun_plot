@@ -2,7 +2,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.stats import uniform
-from arjun_plot.statgen import qqplot_pval, manhattan_plot
+from arjun_plot.statgen import qqplot_pval, manhattan_plot, locus_plot
 
 
 def test_qqplot():
@@ -23,3 +23,13 @@ def test_manhattan_plot():
     pvals = uniform.rvs(size=chroms.size)
     pos = np.sort(uniform.rvs(size=pvals.size))
     manhattan_plot(ax, chroms=chroms, pos=pos, pvals=pvals)
+
+
+def test_locus_plot():
+    """Test out the locus plot for analyses."""
+    _, ax = plt.subplots(1, 1, figsize=(4, 4))
+    np.random.seed(42)
+    nsamples = 500
+    geno = np.random.binomial(2, 0.05, size=nsamples)
+    pheno = geno * 0.1 + np.random.normal(size=nsamples, scale=0.5)
+    locus_plot(ax, geno, pheno)

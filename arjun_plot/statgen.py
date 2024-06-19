@@ -1,6 +1,7 @@
 """Common plotting utilities used in statgen applications."""
 
 import numpy as np
+import warnings
 from scipy.spatial import ConvexHull
 from matplotlib.patches import Polygon
 
@@ -144,18 +145,32 @@ def manhattan_plot(
     return ax, xpos
 
 
-def locus_plot(ax, genotypes, phenotypes):
+def locus_plot(ax, genotypes, phenotypes, boxplot=True, **kwargs):
     """Plots of the genotypes vs. phenotypes for a single-variant.
 
     Args:
         ax (matplotlib.axis): A matplotlib axis object to plot.
         genotypes (numpy.array): genotypes of each individual.
         phenotypes (numpy.array): phenotypes of each individual.
+        boxplot (bool): display as a boxplot or violinplot
     Returns:
         ax (matplotlib.axis): axis containing the variant-specific plot.
+        ns (numpy.array): array of number of genotypes within each class
+        uniq_geno (numpy.array): array of the unique genotypes for phenotypes being plotted
 
     """
     assert genotypes.ndim == 1
     assert phenotypes.ndim == 1
     assert genotypes.size == phenotypes.size
-    raise NotImplementedError("This plotting routine is not currently supported!")
+    uniq_geno = np.sort(np.unique(genotypes))
+    if uniq_geno.size < 3:
+        warnings.warn("Less than 3 genotype classes observed!")
+    ns = np.zeros(uniq_geno.size)
+    for i, u in enumerate(uniq_geno):
+        pheno = phenotypes[genotypes == u]
+        ns[i] = pheno.size
+        if boxplot:
+            ax.boxplot(pheno, positions=[i], **kwargs)
+        else:
+            ax.violinplot(pheno, positions=[i], **kwargs)
+    return ax, ns, uniq_geno
