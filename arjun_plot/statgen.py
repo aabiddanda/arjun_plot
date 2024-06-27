@@ -53,22 +53,24 @@ def plot_null_snps(ax, pos, pvals, q=0.80, threshold=5e6, **kwargs):
             null_pvals = cur_pvals[cur_pvals <= np.nanquantile(pvals, q)]
             null_pos = cur_pos[cur_pvals <= np.nanquantile(pvals, q)]
             assert null_pvals.size == null_pos.size
+            if null_pvals.size > 0:
+                hull_pts = np.vstack([null_pos, null_pvals]).T
+                hull = ConvexHull(hull_pts)
+                vertex_pts = np.vstack(
+                    [hull_pts[hull.vertices, 0], hull_pts[hull.vertices, 1]]
+                ).T
+                ax.add_patch(Polygon(np.array(vertex_pts), **kwargs))
+    else:
+        null_pvals = pvals[pvals < np.nanquantile(pvals, q)]
+        null_pos = pos[pvals < np.nanquantile(pvals, q)]
+        assert null_pvals.size == null_pos.size
+        if null_pvals.size > 0:
             hull_pts = np.vstack([null_pos, null_pvals]).T
             hull = ConvexHull(hull_pts)
             vertex_pts = np.vstack(
                 [hull_pts[hull.vertices, 0], hull_pts[hull.vertices, 1]]
             ).T
             ax.add_patch(Polygon(np.array(vertex_pts), **kwargs))
-    else:
-        null_pvals = pvals[pvals < np.nanquantile(pvals, q)]
-        null_pos = pos[pvals < np.nanquantile(pvals, q)]
-        assert null_pvals.size == null_pos.size
-        hull_pts = np.vstack([null_pos, null_pvals]).T
-        hull = ConvexHull(hull_pts)
-        vertex_pts = np.vstack(
-            [hull_pts[hull.vertices, 0], hull_pts[hull.vertices, 1]]
-        ).T
-        ax.add_patch(Polygon(np.array(vertex_pts), **kwargs))
     return ax, np.nanquantile(pvals, q)
 
 
@@ -146,7 +148,7 @@ def manhattan_plot(
 
 
 def locus_plot(ax, genotypes, phenotypes, boxplot=True, **kwargs):
-    """Plots of the genotypes vs. phenotypes for a single-variant.
+    """Plot the genotypes vs. phenotypes for a single-variant.
 
     Args:
         ax (matplotlib.axis): A matplotlib axis object to plot.
