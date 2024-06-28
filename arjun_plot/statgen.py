@@ -120,8 +120,13 @@ def manhattan_plot(
         idx = np.where(chroms == x)[0]
         if idx.size > 0:
             cur_pos = pos[idx] - np.min(pos[idx])
+            cur_pvals = pvals[idx]
+            # Sort the P-values by default
+            pos_sort = np.argsort(cur_pos)
+            cur_pvals = cur_pvals[pos_sort]
+            cur_pos = cur_pos[pos_sort]
             cur_pos = cur_pos[::thin]
-            cur_pvals = pvals[idx][::thin]
+            cur_pvals = cur_pvals[::thin]
             plot_null_snps(
                 ax,
                 max_pos + cur_pos,

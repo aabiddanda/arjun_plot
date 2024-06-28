@@ -25,6 +25,19 @@ def test_manhattan_plot():
     manhattan_plot(ax, chroms=chroms, pos=pos, pvals=pvals)
 
 
+def test_manhattan_plot_unsorted():
+    """Testing out the manhattan plot function."""
+    _, ax = plt.subplots(1, 1, figsize=(8, 1))
+    nsnps = 1000
+    chroms = []
+    for c in range(1, 23):
+        chroms.extend([f"chr{c}" for _ in range(nsnps)])
+    chroms = np.array(chroms)
+    pvals = uniform.rvs(size=chroms.size)
+    pos = uniform.rvs(size=pvals.size)
+    manhattan_plot(ax, chroms=chroms, pos=pos, pvals=pvals)
+
+
 def test_locus_plot():
     """Test out the locus plot for analyses."""
     _, ax = plt.subplots(1, 1, figsize=(4, 4))
