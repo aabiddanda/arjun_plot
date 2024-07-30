@@ -152,6 +152,68 @@ def manhattan_plot(
     return ax, xpos
 
 
+def locuszoom_plot(
+    ax, chroms, pos, pvals, chrom="chr1", position_min=1e6, position_max=2e6
+):
+    """Create a full locus-zoom plot."""
+    raise NotImplementedError("Locuszoom plot is currently not supported!")
+
+
+def plot_gene_region_worker(
+    ax, build="b38", chrom="chr1", position_min=1e6, position_max=2e6
+):
+    """Helper function to plot genes and exons."""
+    position_min = position_min / M
+    position_max = position_max / M
+
+    scale_gene_rows(gene_rows)
+
+    text_yoffset = 0.4
+    fontsize_magic = 5
+    nrows = len(gene_rows)
+    for i, row in enumerate(gene_rows):
+        y_coord = -i
+        for gene in row:
+            center_x = (gene["txStart"] + gene["txEnd"]) / 2
+            x = [float(gene["txStart"]), float(gene["txEnd"])]
+            y = [y_coord, y_coord]
+            ax.plot(
+                x, y, "b-|", linewidth=1
+            )  ## force vertical line at beginning and end for short genes that might otherwis get dropped by the plot rendering engine
+
+            exonStarts = gene["exonStarts"]
+            exonEnds = gene["exonEnds"]
+
+            for es, ee in zip(exonStarts, exonEnds):
+                x = [es, ee]
+                y = [y_coord, y_coord]
+                gene_axes.plot(x, y, "b-|", linewidth=5)
+
+            if "+" == gene["strand"]:
+                gene_axes.text(
+                    center_x,
+                    y_coord + text_yoffset,
+                    gene["geneName"] + "→",
+                    horizontalalignment="center",
+                    verticalalignment="center",
+                    fontsize=fontsize_magic,
+                )
+            elif "-" == gene["strand"]:
+                gene_axes.text(
+                    center_x,
+                    y_coord + text_yoffset,
+                    "←" + gene["geneName"],
+                    horizontalalignment="center",
+                    verticalalignment="center",
+                    fontsize=fontsize_magic,
+                )
+
+
+def gene_plot(ax, chrom="chr1", start=1e6, end=2e6):
+    """Plot the genes within a region."""
+    raise NotImplementedError("Gene track plot is currently not implemented")
+
+
 def locus_plot(ax, genotypes, phenotypes, boxplot=True, **kwargs):
     """Plot the genotypes vs. phenotypes for a single-variant.
 
