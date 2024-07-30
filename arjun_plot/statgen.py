@@ -160,18 +160,30 @@ def locuszoom_plot(
 
 
 def plot_gene_region_worker(
-    ax, build="b38", chrom="chr1", position_min=1e6, position_max=2e6
+    ax, build="hg38", chrom="chr1", position_min=1000000, position_max=2000000
 ):
     """Helper function to plot genes and exons."""
+    if build is not in ['hg19', 'hg38']:
+        raise ValueError(f'{build} is not a support genome build!')
+    assert (position_min > 0) & (position_max > 0)
+    assert position_max >= position_min
+    import requests
+
+    req = requests.get(
+        f"https://api.genome.ucsc.edu/getData/track?genome={build};track=ncbiRefSeq;chrom={chrom};start={position_min};end={position_max}",
+        headers={"Content-Type": "application/json"},
+    )
+    genes = req.json()['ncbiRefSeq']
+
     position_min = position_min / M
     position_max = position_max / M
 
-    scale_gene_rows(gene_rows)
+    # scale_gene_rows(gene_rows)
 
     text_yoffset = 0.4
     fontsize_magic = 5
     nrows = len(gene_rows)
-    for i, row in enumerate(gene_rows):
+    for i, row in enumerate(genes):
         y_coord = -i
         for gene in row:
             center_x = (gene["txStart"] + gene["txEnd"]) / 2
@@ -187,22 +199,22 @@ def plot_gene_region_worker(
             for es, ee in zip(exonStarts, exonEnds):
                 x = [es, ee]
                 y = [y_coord, y_coord]
-                gene_axes.plot(x, y, "b-|", linewidth=5)
+                ax.plot(x, y, "b-|", linewidth=5)
 
             if "+" == gene["strand"]:
-                gene_axes.text(
+                ax.text(
                     center_x,
                     y_coord + text_yoffset,
-                    gene["geneName"] + "→",
+                    gene["name2"] + "→",
                     horizontalalignment="center",
                     verticalalignment="center",
                     fontsize=fontsize_magic,
                 )
             elif "-" == gene["strand"]:
-                gene_axes.text(
+                ax.text(
                     center_x,
                     y_coord + text_yoffset,
-                    "←" + gene["geneName"],
+                    "←" + gene["name2"],
                     horizontalalignment="center",
                     verticalalignment="center",
                     fontsize=fontsize_magic,
