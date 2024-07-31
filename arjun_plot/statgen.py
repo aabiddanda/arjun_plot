@@ -36,7 +36,7 @@ def plot_null_snps(ax, pos, pvals, q=0.80, threshold=5e6, **kwargs):
     :param np.array pos:
     :param np.array pvals: negative log10 transformed p-values
     :param float q: quantile threshold for grouping effects
-    :param float threshold: threshold for discontinuities in variant positioning
+    :param float threshold: threshold for discontinuities in positioning
     """
     assert pos.size == pvals.size
     assert threshold > 1e6
@@ -171,7 +171,7 @@ def locuszoom_plot(
     """
     assert (position_min > 0) & (position_max > 0)
     assert position_max > position_min
-    ax, _ = manhattan_plot(ax, chroms=chroms, pos=pos, **kwargs)
+    ax, _ = manhattan_plot(ax, chroms=chroms, pos=pos, pvals=pvals, **kwargs)
     ax.set_xlim(position_min, position_max)
     return ax
 
@@ -179,7 +179,20 @@ def locuszoom_plot(
 def plot_gene_region_worker(
     ax, build="hg38", chrom="chr1", position_min=1000000, position_max=1100000
 ):
-    """Helper function to plot genes and exons."""
+    """Plot genes and exons.
+
+    NOTE: much of the functionality is borrowed from https://github.com/krcurtis/locuszoom-plot/blob/master/locuszoom_plot/plot_gene_region.py
+
+    Args:
+        ax (matplotlib.axis): A matplotlib axis object to plot.
+        build (str): genome build and version.
+        chrom (str): current chromosome being plotted.
+        position_min (float): minimum position for a locus zoom.
+        position_max (float): maximum position for a locus zoom.
+    Returns:
+        ax (matplotlib.axis): axis containing the gene-region being plotted.
+
+    """
     if build not in ["hg19", "hg38"]:
         raise ValueError(f"{build} is not a support genome build!")
     assert (position_min > 0) & (position_max > 0)
@@ -187,7 +200,7 @@ def plot_gene_region_worker(
     import requests
 
     req = requests.get(
-        f"https://api.genome.ucsc.edu/getData/track?genome={build};track=ncbiRefSeq;chrom={chrom};start={position_min};end={position_max}",
+        f"https://api.genome.ucsc.edu/getData/track?genome={build};track=ncbiRefSeq;chrom={chrom};start={position_min};end={position_max}",  # noqa
         headers={"Content-Type": "application/json"},
     )
     results = req.json()["ncbiRefSeq"]
@@ -200,7 +213,6 @@ def plot_gene_region_worker(
 
     text_yoffset = 0.5
     fontsize_magic = 5
-    nrows = len(genes)
     for i, gene in enumerate(genes):
         # NOTE: need some way to determine the y-coordinate if this overlaps with previously plotted genes to save vertical space
         y_coord = -i
