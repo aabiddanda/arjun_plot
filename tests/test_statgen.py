@@ -2,7 +2,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.stats import uniform
-from arjun_plot.statgen import qqplot_pval, manhattan_plot, locus_plot
+from arjun_plot.statgen import qqplot_pval, manhattan_plot, locus_plot, locuszoom_plot
 
 
 def test_qqplot():
@@ -47,3 +47,24 @@ def test_locus_plot():
     pheno = geno * 0.1 + np.random.normal(size=nsamples, scale=0.5)
     _, n, _ = locus_plot(ax, geno, pheno)
     assert np.sum(n) == nsamples
+
+
+def test_locuszoom_plot():
+    """Test out initial locuszoom plot."""
+    _, ax = plt.subplots(1, 1, figsize=(8, 1))
+    nsnps = 1000
+    chroms = []
+    for c in range(1, 23):
+        chroms.extend([f"chr{c}" for _ in range(nsnps)])
+    chroms = np.array(chroms)
+    pvals = uniform.rvs(size=chroms.size)
+    pos = uniform.rvs(size=pvals.size)
+    locuszoom_plot(
+        ax,
+        chroms=chroms,
+        pos=pos,
+        pvals=pvals,
+        chrom="chr1",
+        position_min=1e-1,
+        position_max=5e-1,
+    )

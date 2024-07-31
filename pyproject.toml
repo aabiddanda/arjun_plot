@@ -7,7 +7,8 @@ requires = [
     "matplotlib",
     "adjustText",
     "Cartopy",
-    "extension-helpers"
+    "extension-helpers",
+    "requests"
 ]
 build-backend = "setuptools.build_meta"
 

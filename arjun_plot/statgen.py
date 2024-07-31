@@ -153,18 +153,35 @@ def manhattan_plot(
 
 
 def locuszoom_plot(
-    ax, chroms, pos, pvals, chrom="chr1", position_min=1e6, position_max=2e6
+    ax, chroms, pos, pvals, chrom="chr1", position_min=1e6, position_max=2e6, **kwargs
 ):
-    """Create a full locus-zoom plot."""
-    raise NotImplementedError("Locuszoom plot is currently not supported!")
+    """Create a full locus-zoom plot for the GWAS summary statistics.
+
+    Args:
+        ax (matplotlib.axis): A matplotlib axis object to plot.
+        chroms (np.array): numpy array of chromosome values
+        pos (np.array):  numpy array of positions (in basepairs).
+        pvals (np.array): numpy array of p-values.
+        chrom (str): current chromosome being plotted.
+        position_min (float): minimum position for a locus zoom
+        position_max (float): maximum position for a locus zoom
+    Returns:
+        ax (matplotlib.axis): axis containing the locus-zoom plot
+
+    """
+    assert (position_min > 0) & (position_max > 0)
+    assert position_max > position_min
+    ax, _ = manhattan_plot(ax, chroms=chroms, pos=pos, **kwargs)
+    ax.set_xlim(position_min, position_max)
+    return ax
 
 
 def plot_gene_region_worker(
-    ax, build="hg38", chrom="chr1", position_min=1000000, position_max=2000000
+    ax, build="hg38", chrom="chr1", position_min=1000000, position_max=1100000
 ):
     """Helper function to plot genes and exons."""
-    if build is not in ['hg19', 'hg38']:
-        raise ValueError(f'{build} is not a support genome build!')
+    if build not in ["hg19", "hg38"]:
+        raise ValueError(f"{build} is not a support genome build!")
     assert (position_min > 0) & (position_max > 0)
     assert position_max >= position_min
     import requests
@@ -173,52 +190,51 @@ def plot_gene_region_worker(
         f"https://api.genome.ucsc.edu/getData/track?genome={build};track=ncbiRefSeq;chrom={chrom};start={position_min};end={position_max}",
         headers={"Content-Type": "application/json"},
     )
-    genes = req.json()['ncbiRefSeq']
+    results = req.json()["ncbiRefSeq"]
+    names = []
+    genes = []
+    for g in results:
+        if g["name2"] not in names:
+            genes.append(g)
+            names.append(g["name2"])
 
-    position_min = position_min / M
-    position_max = position_max / M
-
-    # scale_gene_rows(gene_rows)
-
-    text_yoffset = 0.4
+    text_yoffset = 0.5
     fontsize_magic = 5
-    nrows = len(gene_rows)
-    for i, row in enumerate(genes):
+    nrows = len(genes)
+    for i, gene in enumerate(genes):
+        # NOTE: need some way to determine the y-coordinate if this overlaps with previously plotted genes to save vertical space
         y_coord = -i
-        for gene in row:
-            center_x = (gene["txStart"] + gene["txEnd"]) / 2
-            x = [float(gene["txStart"]), float(gene["txEnd"])]
+        center_x = (gene["txStart"] + gene["txEnd"]) / 2
+        x = [float(gene["txStart"]), float(gene["txEnd"])]
+        y = [y_coord, y_coord]
+        ax.plot(
+            x, y, "-|", linewidth=1, color="black"
+        )  ## force vertical line at beginning and end for short genes that might otherwis get dropped by the plot rendering engine
+        exonStarts = [int(s) for s in gene["exonStarts"].split(",") if len(s) > 0]
+        exonEnds = [int(s) for s in gene["exonEnds"].split(",") if len(s) > 0]
+        for es, ee in zip(exonStarts, exonEnds):
+            x = [es, ee]
             y = [y_coord, y_coord]
-            ax.plot(
-                x, y, "b-|", linewidth=1
-            )  ## force vertical line at beginning and end for short genes that might otherwis get dropped by the plot rendering engine
-
-            exonStarts = gene["exonStarts"]
-            exonEnds = gene["exonEnds"]
-
-            for es, ee in zip(exonStarts, exonEnds):
-                x = [es, ee]
-                y = [y_coord, y_coord]
-                ax.plot(x, y, "b-|", linewidth=5)
-
-            if "+" == gene["strand"]:
-                ax.text(
-                    center_x,
-                    y_coord + text_yoffset,
-                    gene["name2"] + "→",
-                    horizontalalignment="center",
-                    verticalalignment="center",
-                    fontsize=fontsize_magic,
-                )
-            elif "-" == gene["strand"]:
-                ax.text(
-                    center_x,
-                    y_coord + text_yoffset,
-                    "←" + gene["name2"],
-                    horizontalalignment="center",
-                    verticalalignment="center",
-                    fontsize=fontsize_magic,
-                )
+            ax.plot(x, y, "-|", linewidth=3, color="black")
+        if "+" == gene["strand"]:
+            ax.text(
+                center_x,
+                y_coord + text_yoffset,
+                gene["name2"] + "→",
+                horizontalalignment="center",
+                verticalalignment="center",
+                fontsize=fontsize_magic,
+            )
+        elif "-" == gene["strand"]:
+            ax.text(
+                center_x,
+                y_coord + text_yoffset,
+                "←" + gene["name2"],
+                horizontalalignment="center",
+                verticalalignment="center",
+                fontsize=fontsize_magic,
+            )
+    return ax
 
 
 def gene_plot(ax, chrom="chr1", start=1e6, end=2e6):
