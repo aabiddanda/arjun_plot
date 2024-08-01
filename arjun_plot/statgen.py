@@ -316,8 +316,8 @@ def gene_plot(ax, chrom="chr1", position_min=1e6, position_max=2e6, **kwargs):
     ax = plot_gene_region_worker(
         ax=ax,
         chrom=chrom,
-        position_min=position_min,
-        position_max=position_max,
+        position_min=int(np.round(position_min)),
+        position_max=int(np.round(position_max)),
         **kwargs,
     )
     return ax
