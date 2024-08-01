@@ -2,7 +2,13 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.stats import uniform
-from arjun_plot.statgen import qqplot_pval, manhattan_plot, locus_plot, locuszoom_plot
+from arjun_plot.statgen import (
+    qqplot_pval,
+    manhattan_plot,
+    locus_plot,
+    locuszoom_plot,
+    overlap_interval,
+)
 
 
 def test_qqplot():
@@ -68,3 +74,8 @@ def test_locuszoom_plot():
         position_min=1e-1,
         position_max=5e-1,
     )
+
+
+def test_overlaps():
+    assert overlap_interval((0, 5), (2, 6))
+    assert not overlap_interval((0, 5), (5.1, 6))

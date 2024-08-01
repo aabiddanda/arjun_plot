@@ -176,8 +176,49 @@ def locuszoom_plot(
     return ax
 
 
+def overlap_interval(a, b):
+    """Check if two intervals overlap at all."""
+    if b is None:
+        return False
+    else:
+        assert (len(a) == 2) & (len(b) == 2)
+        assert (a[1] >= a[0]) & (b[1] > b[0])
+        return not ((a[1] < b[0]) or (b[1] < a[0]))
+
+
+def overlap_labels(
+    a, b, lbl_a, lbl_b, position_min, position_max, scaling_factor=0.015
+):
+    if (b is None) or (lbl_b is None):
+        return False
+    else:
+        assert scaling_factor > 0.0
+        position_range = position_max - position_min
+
+        center_a = (a[0] + a[1]) / 2
+        center_a_x = (center_a - position_min) / position_range
+
+        a_width = scaling_factor * (1 + len(lbl_a))
+
+        center_b = (b[0] + b[1]) / 2
+        center_b_x = (center_b - position_min) / position_range
+        b_width = scaling_factor * (1 + len(lbl_b))
+
+        return overlap_interval(
+            [center_a_x - a_width / 2, center_a_x + a_width / 2],
+            [center_b_x - b_width / 2, center_b_x + b_width / 2],
+        )
+
+
 def plot_gene_region_worker(
-    ax, build="hg38", chrom="chr1", position_min=1000000, position_max=1100000
+    ax,
+    build="hg38",
+    chrom="chr1",
+    position_min=1000000,
+    position_max=1100000,
+    yoff=0.1,
+    scaling_factor=0.015,
+    fontsize=6,
 ):
     """Plot genes and exons.
 
@@ -189,6 +230,9 @@ def plot_gene_region_worker(
         chrom (str): current chromosome being plotted.
         position_min (float): minimum position for a locus zoom.
         position_max (float): maximum position for a locus zoom.
+        yoff (float): y offset for plotting
+        scaling_factor (float):
+        fontsize (float):
     Returns:
         ax (matplotlib.axis): axis containing the gene-region being plotted.
 
@@ -197,8 +241,10 @@ def plot_gene_region_worker(
         raise ValueError(f"{build} is not a support genome build!")
     assert (position_min > 0) & (position_max > 0)
     assert position_max >= position_min
+    assert yoff > 0
     import requests
 
+    # Organize the gene-lists
     req = requests.get(
         f"https://api.genome.ucsc.edu/getData/track?genome={build};track=ncbiRefSeq;chrom={chrom};start={position_min};end={position_max}",  # noqa
         headers={"Content-Type": "application/json"},
@@ -211,13 +257,25 @@ def plot_gene_region_worker(
             genes.append(g)
             names.append(g["name2"])
 
-    text_yoffset = 0.5
-    fontsize_magic = 5
+    cur_x = None
+    cur_lbl = None
+    y_coord = 0
     for i, gene in enumerate(genes):
-        # NOTE: need some way to determine the y-coordinate if this overlaps with previously plotted genes to save vertical space
-        y_coord = -i
         center_x = (gene["txStart"] + gene["txEnd"]) / 2
         x = [float(gene["txStart"]), float(gene["txEnd"])]
+        if overlap_interval(x, cur_x) or overlap_labels(
+            x,
+            cur_x,
+            gene["name2"],
+            cur_lbl,
+            position_min=position_min,
+            position_max=position_max,
+            scaling_factor=scaling_factor,
+        ):
+            y_coord -= 0.5
+        else:
+            y_coord = 0.0
+        cur_x = x
         y = [y_coord, y_coord]
         ax.plot(
             x, y, "-|", linewidth=1, color="black"
@@ -231,25 +289,26 @@ def plot_gene_region_worker(
         if "+" == gene["strand"]:
             ax.text(
                 center_x,
-                y_coord + text_yoffset,
+                y_coord + yoff,
                 gene["name2"] + "→",
                 horizontalalignment="center",
                 verticalalignment="center",
-                fontsize=fontsize_magic,
+                fontsize=fontsize,
             )
         elif "-" == gene["strand"]:
             ax.text(
                 center_x,
-                y_coord + text_yoffset,
+                y_coord + yoff,
                 "←" + gene["name2"],
                 horizontalalignment="center",
                 verticalalignment="center",
-                fontsize=fontsize_magic,
+                fontsize=fontsize,
             )
+        cur_lbl = gene["name2"]
     return ax
 
 
-def gene_plot(ax, chrom="chr1", start=1e6, end=2e6):
+def gene_plot(ax, chrom="chr1", start=1e6, end=2e6, **kwargs):
     """Plot the genes within a region."""
     raise NotImplementedError("Gene track plot is currently not implemented")
 
