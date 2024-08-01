@@ -189,6 +189,7 @@ def overlap_interval(a, b):
 def overlap_labels(
     a, b, lbl_a, lbl_b, position_min, position_max, scaling_factor=0.015
 ):
+    """Function to approximately determine if two text labels sufficiently overlap."""
     if (b is None) or (lbl_b is None):
         return False
     else:
@@ -230,9 +231,9 @@ def plot_gene_region_worker(
         chrom (str): current chromosome being plotted.
         position_min (float): minimum position for a locus zoom.
         position_max (float): maximum position for a locus zoom.
-        yoff (float): y offset for plotting
-        scaling_factor (float):
-        fontsize (float):
+        yoff (float): y offset for plotting gene names
+        scaling_factor (float): scaling factor for text-labels (larger indicates less overlap)
+        fontsize (float): fontsize of gene names
     Returns:
         ax (matplotlib.axis): axis containing the gene-region being plotted.
 
@@ -242,6 +243,8 @@ def plot_gene_region_worker(
     assert (position_min > 0) & (position_max > 0)
     assert position_max >= position_min
     assert yoff > 0
+    assert scaling_factor > 0
+    assert fontsize > 0
     import requests
 
     # Organize the gene-lists
@@ -308,9 +311,16 @@ def plot_gene_region_worker(
     return ax
 
 
-def gene_plot(ax, chrom="chr1", start=1e6, end=2e6, **kwargs):
+def gene_plot(ax, chrom="chr1", position_min=1e6, position_max=2e6, **kwargs):
     """Plot the genes within a region."""
-    raise NotImplementedError("Gene track plot is currently not implemented")
+    ax = plot_gene_region_worker(
+        ax=ax,
+        chrom=chrom,
+        position_min=position_min,
+        position_max=position_max,
+        **kwargs,
+    )
+    return ax
 
 
 def locus_plot(ax, genotypes, phenotypes, boxplot=True, **kwargs):

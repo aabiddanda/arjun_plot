@@ -8,6 +8,7 @@ from arjun_plot.statgen import (
     locus_plot,
     locuszoom_plot,
     overlap_interval,
+    gene_plot,
 )
 
 
@@ -77,5 +78,12 @@ def test_locuszoom_plot():
 
 
 def test_overlaps():
+    """Test the overlap between two intervals."""
     assert overlap_interval((0, 5), (2, 6))
     assert not overlap_interval((0, 5), (5.1, 6))
+
+
+def test_gene_plot():
+    """Test the plotting of genes."""
+    _, ax = plt.subplots(1, 1, figsize=(6, 2))
+    gene_plot(ax=ax)
