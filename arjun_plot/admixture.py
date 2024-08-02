@@ -46,7 +46,9 @@ def subset_Q(Q, labels, order, subset=None):
     return (Q, labels, order)
 
 
-def plot_k(ax, Q, lbls, order, colors, subset=None, spacing=2, bar_width=1, **kwargs):
+def plot_k(
+    ax, Q, lbls, order, colors, subset=None, spacing=2, bar_width=1, **kwargs
+):  # noqa
     """Plot a single run of ADMIXTURE/STRUCTURE."""
     # Subset if we need to for different populations
     Q, labels, order = subset_Q(Q, lbls, order, subset)

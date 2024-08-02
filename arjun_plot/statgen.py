@@ -170,14 +170,24 @@ def locuszoom_plot(
 
     """
     assert (position_min > 0) & (position_max > 0)
-    assert position_max > position_min
-    ax, _ = manhattan_plot(ax, chroms=chroms, pos=pos, pvals=pvals, **kwargs)
+    assert position_max >= position_min
+    assert chrom in chroms
+    ax, _ = manhattan_plot(
+        ax, chroms=chroms, pos=pos, pvals=pvals, chrom_def=[chrom], **kwargs
+    )
     ax.set_xlim(position_min, position_max)
     return ax
 
 
 def overlap_interval(a, b):
-    """Check if two intervals overlap at all."""
+    """Check if two intervals overlap at all.
+
+    Args:
+        a (tuple): A matplotlib axis object to plot.
+        b (tuple): Can be
+    Returns:
+        overlap (bool): boolean indicator for overlapping.
+    """
     if b is None:
         return False
     else:
@@ -189,7 +199,7 @@ def overlap_interval(a, b):
 def overlap_labels(
     a, b, lbl_a, lbl_b, position_min, position_max, scaling_factor=0.015
 ):
-    """Function to approximately determine if two text labels sufficiently overlap."""
+    """Determine if two text labels sufficiently overlap."""
     if (b is None) or (lbl_b is None):
         return False
     else:
