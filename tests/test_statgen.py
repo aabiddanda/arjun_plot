@@ -9,6 +9,7 @@ from arjun_plot.statgen import (
     locuszoom_plot,
     overlap_interval,
     gene_plot,
+    rescale_axis,
 )
 
 
@@ -87,3 +88,9 @@ def test_gene_plot():
     """Test the plotting of genes."""
     _, ax = plt.subplots(1, 1, figsize=(6, 2))
     gene_plot(ax=ax)
+
+
+def test_rescale_axis():
+    _, ax = plt.subplots(1, 1, figsize=(6, 2))
+    ax = gene_plot(ax=ax)
+    rescale_axis(ax)
