@@ -148,7 +148,8 @@ def manhattan_plot(
             # increment the counter and mod to keep even / odd order
             i = (i + 1) % 2
     # Set the xtick labels ...
-    ax.set_xticks([])
+    if len(chrom_def) > 0:
+        ax.set_xticks([])
     return ax, xpos
 
 
@@ -165,17 +166,18 @@ def locuszoom_plot(
         chrom (str): current chromosome being plotted.
         position_min (float): minimum position for a locus zoom
         position_max (float): maximum position for a locus zoom
+
     Returns:
         ax (matplotlib.axis): axis containing the locus-zoom plot
-
     """
     assert (position_min > 0) & (position_max > 0)
     assert position_max >= position_min
     assert chrom in chroms
-    ax, _ = manhattan_plot(
-        ax, chroms=chroms, pos=pos, pvals=pvals, chrom_def=[chrom], **kwargs
-    )
-    ax.set_xlim(position_min, position_max)
+    idx = (chroms == chrom) & (pos >= position_min) & (pos <= position_max)
+    if np.all((pvals >= 0) & (pvals <= 1.0)):
+        # Transform to the -log10 scale if necessary
+        pvals = -np.log10(pvals)
+    ax.scatter(pos[idx], pvals[idx], **kwargs)
     return ax
 
 
@@ -183,23 +185,39 @@ def overlap_interval(a, b):
     """Check if two intervals overlap at all.
 
     Args:
-        a (tuple): A matplotlib axis object to plot.
-        b (tuple): Can be
+        a (tuple): A tuple for genomic range.
+        b (tuple): A tuple for genomic range - can be None.
+
     Returns:
         overlap (bool): boolean indicator for overlapping.
+
     """
     if b is None:
         return False
     else:
         assert (len(a) == 2) & (len(b) == 2)
-        assert (a[1] >= a[0]) & (b[1] > b[0])
+        assert (a[1] >= a[0]) & (b[1] >= b[0])
         return not ((a[1] < b[0]) or (b[1] < a[0]))
 
 
 def overlap_labels(
     a, b, lbl_a, lbl_b, position_min, position_max, scaling_factor=0.015
 ):
-    """Determine if two text labels sufficiently overlap."""
+    """Determine if two text labels sufficiently overlap.
+
+    Args:
+        a (tuple): A tuple for genomic range.
+        b (tuple): A tuple for genomic range - can be None.
+        lbl_a (string): Text label for interval a.
+        lbl_b (string): Text label for interval b.
+        position_min (float): minimum position for a locus zoom.
+        position_max (float): maximum position for a locus zoom.
+        scaling_factor (float): scaling factor to determine distance.
+
+    Returns:
+        overlap (bool): boolean indicator for overlapping text.
+
+    """
     if (b is None) or (lbl_b is None):
         return False
     else:
@@ -242,8 +260,9 @@ def plot_gene_region_worker(
         position_min (float): minimum position for a locus zoom.
         position_max (float): maximum position for a locus zoom.
         yoff (float): y offset for plotting gene names
-        scaling_factor (float): scaling factor for text-labels (larger indicates less overlap)
-        fontsize (float): fontsize of gene names
+        scaling_factor (float): scaling factor for text-labels (larger indicates less overlap).
+        fontsize (float): fontsize of gene names.
+
     Returns:
         ax (matplotlib.axis): axis containing the gene-region being plotted.
 
@@ -276,48 +295,52 @@ def plot_gene_region_worker(
     for i, gene in enumerate(genes):
         center_x = (gene["txStart"] + gene["txEnd"]) / 2
         x = [float(gene["txStart"]), float(gene["txEnd"])]
-        if overlap_interval(x, cur_x) or overlap_labels(
-            x,
-            cur_x,
-            gene["name2"],
-            cur_lbl,
-            position_min=position_min,
-            position_max=position_max,
-            scaling_factor=scaling_factor,
+        if not (
+            overlap_interval(x, (position_min, position_min))
+            or overlap_interval(x, (position_max, position_max))
         ):
-            y_coord -= 0.5
-        else:
-            y_coord = 0.0
-        cur_x = x
-        y = [y_coord, y_coord]
-        ax.plot(
-            x, y, "-|", linewidth=1, color="black"
-        )  ## force vertical line at beginning and end for short genes that might otherwis get dropped by the plot rendering engine
-        exonStarts = [int(s) for s in gene["exonStarts"].split(",") if len(s) > 0]
-        exonEnds = [int(s) for s in gene["exonEnds"].split(",") if len(s) > 0]
-        for es, ee in zip(exonStarts, exonEnds):
-            x = [es, ee]
+            if overlap_interval(x, cur_x) or overlap_labels(
+                x,
+                cur_x,
+                gene["name2"],
+                cur_lbl,
+                position_min=position_min,
+                position_max=position_max,
+                scaling_factor=scaling_factor,
+            ):
+                y_coord -= 0.5
+            else:
+                y_coord = 0.0
+            cur_x = x
             y = [y_coord, y_coord]
-            ax.plot(x, y, "-|", linewidth=3, color="black")
-        if "+" == gene["strand"]:
-            ax.text(
-                center_x,
-                y_coord + yoff,
-                gene["name2"] + "→",
-                horizontalalignment="center",
-                verticalalignment="center",
-                fontsize=fontsize,
-            )
-        elif "-" == gene["strand"]:
-            ax.text(
-                center_x,
-                y_coord + yoff,
-                "←" + gene["name2"],
-                horizontalalignment="center",
-                verticalalignment="center",
-                fontsize=fontsize,
-            )
-        cur_lbl = gene["name2"]
+            ax.plot(
+                x, y, "-|", linewidth=1, color="black"
+            )  ## force vertical line at beginning and end for short genes that might otherwis get dropped by the plot rendering engine
+            exonStarts = [int(s) for s in gene["exonStarts"].split(",") if len(s) > 0]
+            exonEnds = [int(s) for s in gene["exonEnds"].split(",") if len(s) > 0]
+            for es, ee in zip(exonStarts, exonEnds):
+                x = [es, ee]
+                y = [y_coord, y_coord]
+                ax.plot(x, y, "-|", linewidth=3, color="black")
+            if "+" == gene["strand"]:
+                ax.text(
+                    center_x,
+                    y_coord + yoff,
+                    gene["name2"] + "→",
+                    horizontalalignment="center",
+                    verticalalignment="center",
+                    fontsize=fontsize,
+                )
+            elif "-" == gene["strand"]:
+                ax.text(
+                    center_x,
+                    y_coord + yoff,
+                    "←" + gene["name2"],
+                    horizontalalignment="center",
+                    verticalalignment="center",
+                    fontsize=fontsize,
+                )
+            cur_lbl = gene["name2"]
     return ax
 
 
@@ -330,6 +353,14 @@ def gene_plot(ax, chrom="chr1", position_min=1e6, position_max=2e6, **kwargs):
         position_max=int(np.round(position_max)),
         **kwargs,
     )
+    ax.set_yticks([])
+    return ax
+
+
+def rescale_axis(ax, scale=1e6):
+    """Rescale the x-axis ticklabels to megabase."""
+    assert scale > 1.0
+    ax.set_xticklabels([f"{i}" for i in ax.get_xticks() / scale])
     return ax
 
 
@@ -338,12 +369,13 @@ def locus_plot(ax, genotypes, phenotypes, boxplot=True, **kwargs):
 
     Args:
         ax (matplotlib.axis): A matplotlib axis object to plot.
-        genotypes (numpy.array): genotypes of each individual
+        genotypes (numpy.array): genotypes of each individual.
         phenotypes (numpy.array): phenotypes of each individual.
-        boxplot (bool): display as a boxplot or violinplot
+        boxplot (bool): display as a boxplot or violinplot.
+
     Returns:
         ax (matplotlib.axis): axis containing the variant-specific plot.
-        ns (numpy.array): array of number of genotypes within each class
+        ns (numpy.array): array of number of genotypes within each class.
         uniq_geno (numpy.array): array of the unique genotypes for phenotypes being plotted
 
     """
