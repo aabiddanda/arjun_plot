@@ -3,8 +3,7 @@
 API Documentation
 ==================
 
-
-ADMIXTURE 
+Admixture 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. automodule:: arjun_plot.admixture
    :members:

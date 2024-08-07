@@ -2,16 +2,11 @@ Installation
 ============
 
 
-Installation from source 
-------------------------
-
 Currently, the only supported installation method is to install the package from source::
 
   git clone https://github.com/aabiddanda/arjun_plot.git
   cd arjun_plot/
   pip install .
-
-
 
 Alternatively, you can use::
 
