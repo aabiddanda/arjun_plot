@@ -169,6 +169,10 @@ def locuszoom_plot(
 
     Returns:
         ax (matplotlib.axis): axis containing the locus-zoom plot
+<<<<<<< HEAD
+=======
+
+>>>>>>> statgen
     """
     assert (position_min > 0) & (position_max > 0)
     assert position_max >= position_min
@@ -248,6 +252,7 @@ def plot_gene_region_worker(
     yoff=0.1,
     scaling_factor=0.015,
     fontsize=6,
+    name_filt=[],
 ):
     """Plot genes and exons.
 
@@ -262,6 +267,7 @@ def plot_gene_region_worker(
         yoff (float): y offset for plotting gene names
         scaling_factor (float): scaling factor for text-labels (larger indicates less overlap).
         fontsize (float): fontsize of gene names.
+        name_filt (list): list of regex elements to filter gene names by.
 
     Returns:
         ax (matplotlib.axis): axis containing the gene-region being plotted.
@@ -275,6 +281,7 @@ def plot_gene_region_worker(
     assert scaling_factor > 0
     assert fontsize > 0
     import requests
+    import re
 
     # Organize the gene-lists
     req = requests.get(
@@ -285,9 +292,14 @@ def plot_gene_region_worker(
     names = []
     genes = []
     for g in results:
+        # Want to avoid repeats
         if g["name2"] not in names:
-            genes.append(g)
-            names.append(g["name2"])
+            nmatch = 0
+            for x in name_filt:
+                nmatch += len(re.findall(x, g["name2"]))
+            if nmatch == 0:
+                genes.append(g)
+                names.append(g["name2"])
 
     cur_x = None
     cur_lbl = None
