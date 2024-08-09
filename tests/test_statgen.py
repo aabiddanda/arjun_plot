@@ -91,6 +91,7 @@ def test_gene_plot():
 
 
 def test_rescale_axis():
+    """Test rescaling of the x-axis."""
     _, ax = plt.subplots(1, 1, figsize=(6, 2))
     ax = gene_plot(ax=ax)
     rescale_axis(ax)
