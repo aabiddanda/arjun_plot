@@ -406,3 +406,19 @@ def locus_plot(ax, genotypes, phenotypes, boxplot=True, **kwargs):
         else:
             ax.violinplot(pheno, positions=[i], **kwargs)
     return ax, ns, uniq_geno
+
+def extract_ld_matrix(vcf_fp, chrom='chr1', position_min=None, position_max=None):
+    from cyvcf2 import VCF
+    from tqdm import tqdm
+    vcf =  VCF(vcf_fp, gts012=True, threads=12)
+    ids = [] 
+    gts = []
+    for v in tqdm(vcf(f'{chrom}:{int(position_min)}-{int(position_max)}')):
+        ids.append(v.ID)
+        gts.append(v.gt_types.copy())
+    assert len(ids) == len(gts)
+    R2 = np.corrcoef(np.vstack(gts))**2
+    ids = np.array(ids)
+    assert R2.shape[0] == R2.shape[1]
+    assert R2.shape[0] == ids.size
+    return ids, R2
