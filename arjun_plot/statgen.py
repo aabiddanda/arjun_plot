@@ -154,7 +154,18 @@ def manhattan_plot(
 
 
 def locuszoom_plot(
-    ax, chroms, pos, pvals, chrom="chr1", position_min=1e6, position_max=2e6, **kwargs
+    ax,
+    chroms,
+    pos,
+    pvals,
+    variants,
+    chrom="chr1",
+    position_min=1e6,
+    position_max=2e6,
+    variant_ids=None,
+    lead_variant=None,
+    ld_matrix=None,
+    **kwargs,
 ):
     """Create a full locus-zoom plot for the GWAS summary statistics.
 
@@ -164,16 +175,16 @@ def locuszoom_plot(
         pos (np.array):  numpy array of positions (in basepairs).
         pvals (np.array): numpy array of p-values.
         chrom (str): current chromosome being plotted.
-        position_min (float): minimum position for a locus zoom
-        position_max (float): maximum position for a locus zoom
+        position_min (float): minimum position for a locus zoom.
+        position_max (float): maximum position for a locus zoom.
+        variant_ids (np.array): IDs of individual variants.
+        lead_variant (str): ID of lead variant.
 
     Returns:
-        ax (matplotlib.axis): axis containing the locus-zoom plot
-<<<<<<< HEAD
-=======
-
->>>>>>> statgen
+        ax (matplotlib.axis): axis containing the locus-zoom plot.
+        im (matplotlib.Mappable): mappable values for colorbar.
     """
+    assert chroms.size == pos.size == pvals.size == variants.size
     assert (position_min > 0) & (position_max > 0)
     assert position_max >= position_min
     assert chrom in chroms
@@ -181,8 +192,21 @@ def locuszoom_plot(
     if np.all((pvals >= 0) & (pvals <= 1.0)):
         # Transform to the -log10 scale if necessary
         pvals = -np.log10(pvals)
-    ax.scatter(pos[idx], pvals[idx], **kwargs)
-    return ax
+    if variant_ids is not None:
+        assert lead_variant in variant_ids
+        assert variant_ids.size == pos[idx].size
+        assert ld_matrix is not None
+        lead_idx = np.where(variant_ids == lead_variant)
+        # NOTE: we get the row corresponding to the lead variant ...
+        r_vals = ld_matrix[lead_idx, :]
+        ax.scatter(
+            pos[idx[lead_idx]], pvals[idx[lead_idx]], c=[1.0], marker="d", **kwargs
+        )
+        im = ax.scatter(pos[idx], pvals[idx], c=r_vals, **kwargs)
+        return ax, im
+    else:
+        ax.scatter(pos[idx], pvals[idx], **kwargs)
+        return ax, None
 
 
 def overlap_interval(a, b):
@@ -407,17 +431,42 @@ def locus_plot(ax, genotypes, phenotypes, boxplot=True, **kwargs):
             ax.violinplot(pheno, positions=[i], **kwargs)
     return ax, ns, uniq_geno
 
-def extract_ld_matrix(vcf_fp, chrom='chr1', position_min=None, position_max=None):
+
+def extract_ld_matrix(
+    vcf_fp, chrom="chr1", position_min=1e6, position_max=2e6, **kwargs
+):
+    """Extract an empirical LD matrix from a tabix-indexed VCF file.
+
+    Args:
+        vcf_fp (string): VCF file for estimation of LD matrix.
+        chrom (string): string for chromosome ID.
+        position_min (float): minimum position in basepairs.
+        position_max (float): maximum position in basepairs.
+
+    Returns:
+        variant_ids (np.array): variant IDs of each variant.
+        R2 (np.array): matrix of R2 values.
+
+    """
     from cyvcf2 import VCF
     from tqdm import tqdm
-    vcf =  VCF(vcf_fp, gts012=True, threads=12)
-    ids = [] 
+    from pathlib import Path
+
+    assert Path(vcf_fp).is_file()
+    assert position_max >= position_min
+    if (position_max - position_min) > 1e6:
+        warnings.warn("Calculating LD over more than a megabase is not well supported!")
+        raise ValueError(
+            f"{chrom}:{position_min}-{position_max} is too large a region."
+        )
+    vcf = VCF(vcf_fp, **kwargs)
+    ids = []
     gts = []
-    for v in tqdm(vcf(f'{chrom}:{int(position_min)}-{int(position_max)}')):
+    for v in tqdm(vcf(f"{chrom}:{int(position_min)}-{int(position_max)}")):
         ids.append(v.ID)
         gts.append(v.gt_types.copy())
     assert len(ids) == len(gts)
-    R2 = np.corrcoef(np.vstack(gts))**2
+    R2 = np.corrcoef(np.vstack(gts)) ** 2
     ids = np.array(ids)
     assert R2.shape[0] == R2.shape[1]
     assert R2.shape[0] == ids.size
