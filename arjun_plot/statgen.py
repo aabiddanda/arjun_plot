@@ -162,8 +162,8 @@ def locuszoom_plot(
     chrom="chr1",
     position_min=1e6,
     position_max=2e6,
-    variant_ids=None,
     lead_variant=None,
+    ld_variant_ids=None,
     ld_matrix=None,
     **kwargs,
 ):
@@ -174,6 +174,7 @@ def locuszoom_plot(
         chroms (np.array): numpy array of chromosome values
         pos (np.array):  numpy array of positions (in basepairs).
         pvals (np.array): numpy array of p-values.
+        variants (np.array): numpy array of variant IDs (typically CPRA).
         chrom (str): current chromosome being plotted.
         position_min (float): minimum position for a locus zoom.
         position_max (float): maximum position for a locus zoom.
@@ -183,29 +184,57 @@ def locuszoom_plot(
     Returns:
         ax (matplotlib.axis): axis containing the locus-zoom plot.
         im (matplotlib.Mappable): mappable values for colorbar.
+
     """
     assert chroms.size == pos.size == pvals.size == variants.size
     assert (position_min > 0) & (position_max > 0)
     assert position_max >= position_min
     assert chrom in chroms
+
     idx = (chroms == chrom) & (pos >= position_min) & (pos <= position_max)
-    if np.all((pvals >= 0) & (pvals <= 1.0)):
+    # Subsetting the variants ...
+    sub_pos = pos[idx]
+    sub_pval = pvals[idx]
+    sub_variants = variants[idx]
+    if np.all((sub_pvals >= 0) & (sub_pvals <= 1.0)):
         # Transform to the -log10 scale if necessary
-        pvals = -np.log10(pvals)
-    if variant_ids is not None:
-        assert lead_variant in variant_ids
-        assert variant_ids.size == pos[idx].size
+        sub_pvals = -np.log10(sub_pvals)
+    if lead_variant is not None:
+        lead_idx = np.where(sub_variants == lead_variant)[0]
+        if ld_matrix is not None:
+            ax.scatter(
+                sub_pos[lead_idx], sub_pvals[lead_idx], c=[1.0], marker="d", **kwargs
+            )
+        else:
+            ax.scatter(sub_pos[lead_idx], sub_pvals[lead_idx], marker="d", **kwargs)
+    if ld_variant_ids is not None:
+        assert lead_variant in ld_variant_ids
         assert ld_matrix is not None
-        lead_idx = np.where(variant_ids == lead_variant)
-        # NOTE: we get the row corresponding to the lead variant ...
-        r_vals = ld_matrix[lead_idx, :]
-        ax.scatter(
-            pos[idx[lead_idx]], pvals[idx[lead_idx]], c=[1.0], marker="d", **kwargs
-        )
-        im = ax.scatter(pos[idx], pvals[idx], c=r_vals, **kwargs)
-        return ax, im
+        # Get the indexes of intersecting variants ...
+        # NOTE: make some errors in case there are strange overlaps?
+        intersect_variants = np.intersect1d(sub_variants, ld_variant_ids)
+        variant_idx_matched = np.isin(sub_variants, intersect_variants)
+        ld_variant_idx_matched = np.isin(ld_variant_ids, intersect_variants)
+        R2_matched = R2[ld_variant_idx_matched, :][:, ld_variant_idx_matched]
+        if lead_variant in sub_variants[variant_idx_matched]:
+            lead_idx = np.where(sub_variants[variant_idx_matched] == lead_variant)[0]
+            ax.scatter(
+                sub_pos[lead_idx], sub_pvals[lead_idx], c=[1.0], marker="d", **kwargs
+            )
+            r_vals = R2_matched[lead_idx, :]
+            assert r_vals.size == sub_pos[variant_idx_matched].size
+            im = ax.scatter(
+                sub_pos[variant_idx_matched],
+                sub_pvals[variant_idx_matched],
+                c=r_vals,
+                **kwargs,
+            )
+            return ax, im
+        else:
+            warnings.warn(f"{lead_variant} was not found in LD matrix!")
+            ax.scatter(sub_pos, sub_pvals, **kwargs)
     else:
-        ax.scatter(pos[idx], pvals[idx], **kwargs)
+        ax.scatter(sub_pos, sub_pvals, **kwargs)
         return ax, None
 
 
@@ -468,6 +497,7 @@ def extract_ld_matrix(
     assert len(ids) == len(gts)
     R2 = np.corrcoef(np.vstack(gts)) ** 2
     ids = np.array(ids)
+    assert R2.ndim == 2
     assert R2.shape[0] == R2.shape[1]
     assert R2.shape[0] == ids.size
     return ids, R2
