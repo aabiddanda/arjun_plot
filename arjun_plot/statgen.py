@@ -194,7 +194,7 @@ def locuszoom_plot(
     idx = (chroms == chrom) & (pos >= position_min) & (pos <= position_max)
     # Subsetting the variants ...
     sub_pos = pos[idx]
-    sub_pval = pvals[idx]
+    sub_pvals = pvals[idx]
     sub_variants = variants[idx]
     if np.all((sub_pvals >= 0) & (sub_pvals <= 1.0)):
         # Transform to the -log10 scale if necessary
@@ -215,11 +215,18 @@ def locuszoom_plot(
         intersect_variants = np.intersect1d(sub_variants, ld_variant_ids)
         variant_idx_matched = np.isin(sub_variants, intersect_variants)
         ld_variant_idx_matched = np.isin(ld_variant_ids, intersect_variants)
-        R2_matched = R2[ld_variant_idx_matched, :][:, ld_variant_idx_matched]
+        # Subset LD matrix to variants that are in the intersection ...
+        R2_matched = ld_matrix[ld_variant_idx_matched, :][:, ld_variant_idx_matched]
         if lead_variant in sub_variants[variant_idx_matched]:
+            # What do we do for variants that are not matched?
             lead_idx = np.where(sub_variants[variant_idx_matched] == lead_variant)[0]
             ax.scatter(
-                sub_pos[lead_idx], sub_pvals[lead_idx], c=[1.0], marker="d", **kwargs
+                sub_pos[variant_idx_matched][lead_idx],
+                sub_pvals[variant_idx_matched][lead_idx],
+                c=[1.0],
+                marker="d",
+                zorder=100,
+                **kwargs,
             )
             r_vals = R2_matched[lead_idx, :]
             assert r_vals.size == sub_pos[variant_idx_matched].size
@@ -229,10 +236,19 @@ def locuszoom_plot(
                 c=r_vals,
                 **kwargs,
             )
+            # Plot the variants not found in the LD matrix ...
+            ax.scatter(
+                sub_pos[~variant_idx_matched],
+                sub_pvals[~variant_idx_matched],
+                color="gray",
+                alpha=0.5,
+                **kwargs,
+            )
             return ax, im
         else:
             warnings.warn(f"{lead_variant} was not found in LD matrix!")
             ax.scatter(sub_pos, sub_pvals, **kwargs)
+            return ax, None
     else:
         ax.scatter(sub_pos, sub_pvals, **kwargs)
         return ax, None
@@ -500,4 +516,5 @@ def extract_ld_matrix(
     assert R2.ndim == 2
     assert R2.shape[0] == R2.shape[1]
     assert R2.shape[0] == ids.size
+    assert np.all(R2 >= 0)
     return ids, R2
