@@ -217,6 +217,12 @@ def locuszoom_plot(
         ld_variant_idx_matched = np.isin(ld_variant_ids, intersect_variants)
         # Subset LD matrix to variants that are in the intersection ...
         R2_matched = ld_matrix[ld_variant_idx_matched, :][:, ld_variant_idx_matched]
+        ld_var_sort = ld_variant_ids[ld_variant_idx_matched].argsort()
+        sub_var_sort = sub_variants[variant_idx_matched].argsort()
+        assert np.all(
+            ld_variant_ids[ld_variant_idx_matched][ld_var_sort]
+            == sub_variants[variant_idx_matched][sub_var_sort]
+        )
         if lead_variant in sub_variants[variant_idx_matched]:
             # What do we do for variants that are not matched?
             lead_idx = np.where(sub_variants[variant_idx_matched] == lead_variant)[0]
@@ -228,11 +234,16 @@ def locuszoom_plot(
                 zorder=100,
                 **kwargs,
             )
-            r_vals = R2_matched[lead_idx, :]
+            # Sorting the LD matrix appropriately before plotting!
+            R2_matched_sorted = R2_matched[ld_var_sort, :][:, ld_var_sort]
+            lead_idx2 = np.where(
+                ld_variant_ids[ld_variant_idx_matched][ld_var_sort] == lead_variant
+            )[0]
+            r_vals = R2_matched_sorted[lead_idx2, :]
             assert r_vals.size == sub_pos[variant_idx_matched].size
             im = ax.scatter(
-                sub_pos[variant_idx_matched],
-                sub_pvals[variant_idx_matched],
+                sub_pos[variant_idx_matched][sub_var_sort],
+                sub_pvals[variant_idx_matched][sub_var_sort],
                 c=r_vals,
                 **kwargs,
             )
