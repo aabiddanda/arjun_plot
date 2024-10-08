@@ -358,22 +358,31 @@ def plot_gene_region_worker(
         headers={"Content-Type": "application/json"},
     )
     results = req.json()["ncbiRefSeq"]
-    names = []
-    genes = []
+    genes = {}
     for g in results:
-        # Want to avoid repeats
-        if g["name2"] not in names:
-            nmatch = 0
-            for x in name_filt:
-                nmatch += len(re.findall(x, g["name2"]))
-            if nmatch == 0:
-                genes.append(g)
-                names.append(g["name2"])
+        # Want to avoid repeats & will get the longest transcript.
+        nmatch = 0
+        for x in name_filt:
+            nmatch += len(re.findall(x, g["name2"]))
+        if nmatch == 0:
+            if g["name2"] not in genes:
+                genes[g["name2"]] = g
+            else:
+                try:
+                    current_length = abs(
+                        genes[g["name2"]]["cdsStart"] - genes[g["name2"]]["cdsEnd"]
+                    )
+                    new_length = abs(g["cdsStart"] - g["cdsEnd"])
+                    if new_length > current_length:
+                        genes[g["name2"]] = g
+                except KeyError:
+                    pass
 
     cur_x = None
     cur_lbl = None
     y_coord = 0
-    for i, gene in enumerate(genes):
+    for i, name in enumerate(genes):
+        gene = genes[name]
         center_x = (gene["txStart"] + gene["txEnd"]) / 2
         x = [float(gene["txStart"]), float(gene["txEnd"])]
         if not (
