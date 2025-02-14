@@ -76,3 +76,41 @@ def rand_jitter(arr, scale=0.01, seed=None):
         np.random.seed(seed)
     stdev = scale * (max(arr) - min(arr))
     return arr + np.random.randn(len(arr)) * stdev
+
+
+def swarm(arr, nbins=None, width=1.0):
+    """
+    Swarm plot coordinate transform for ``arr``.
+    Based on answer here: https://stackoverflow.com/a/76405274
+    """
+    assert width > 0
+    y = np.asarray(arr)
+    assert y.ndim == 1
+    assert y.size > 0
+    if nbins is None:
+        nbins = np.ceil(y.size / 6).astype(int)
+
+    # Get upper bounds of bins
+    x = np.zeros(y.size)
+
+    nn, ybins = np.histogram(y, bins=nbins)
+    nmax = nn.max()
+
+    # Divide indices into bins
+    ibs = []
+    for ymin, ymax in zip(ybins[:-1], ybins[1:]):
+        i = np.nonzero((y > ymin) * (y <= ymax))[0]
+        ibs.append(i)
+
+    # Assign x indices
+    dx = width / (nmax // 2)
+    for i in ibs:
+        yy = y[i]
+        if len(i) > 1:
+            j = len(i) % 2
+            i = i[np.argsort(yy)]
+            a = i[j::2]
+            b = i[(j + 1) :: 2]
+            x[a] = (0.5 + j / 3 + np.arange(len(b))) * dx
+            x[b] = (0.5 + j / 3 + np.arange(len(b))) * -dx
+    return x
