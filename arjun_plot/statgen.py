@@ -381,9 +381,9 @@ def plot_gene_region_worker(
             else:
                 try:
                     current_length = abs(
-                        genes[g["name2"]]["cdsStart"] - genes[g["name2"]]["cdsEnd"]
+                        genes[g["name2"]]["txStart"] - genes[g["name2"]]["txEnd"]
                     )
-                    new_length = abs(g["cdsStart"] - g["cdsEnd"])
+                    new_length = abs(g["txStart"] - g["txEnd"])
                     if new_length > current_length:
                         genes[g["name2"]] = g
                 except KeyError:
