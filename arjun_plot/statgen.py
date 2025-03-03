@@ -326,6 +326,7 @@ def overlap_labels(
 def plot_gene_region_worker(
     ax,
     build="hg38",
+    track="ncbiRefSeq",
     chrom="chr1",
     position_min=1000000,
     position_max=1100000,
@@ -354,7 +355,9 @@ def plot_gene_region_worker(
 
     """
     if build not in ["hg19", "hg38"]:
-        raise ValueError(f"{build} is not a support genome build!")
+        raise ValueError(f"{build} is not a supported genome build!")
+    if track not in ["ncbiRefSeq", "knownGene"]:
+        raise ValueError(f"{track} is not a supported UCSC track!")
     assert (position_min > 0) & (position_max > 0)
     assert position_max >= position_min
     assert yoff > 0
@@ -365,7 +368,7 @@ def plot_gene_region_worker(
 
     # Organize the gene-lists
     req = requests.get(
-        f"https://api.genome.ucsc.edu/getData/track?genome={build};track=ncbiRefSeq;chrom={chrom};start={position_min};end={position_max}",  # noqa
+        f"https://api.genome.ucsc.edu/getData/track?genome={build};track={track};chrom={chrom};start={position_min};end={position_max}",  # noqa
         headers={"Content-Type": "application/json"},
     )
     results = req.json()["ncbiRefSeq"]
