@@ -67,9 +67,11 @@ def test_locuszoom_plot():
     chroms = np.array(chroms)
     pvals = uniform.rvs(size=chroms.size)
     pos = uniform.rvs(size=pvals.size)
+    variants = np.array([f"{c}:{p}" for (c, p) in zip(chroms, pvals)])
     locuszoom_plot(
         ax,
         chroms=chroms,
+        variants=variants,
         pos=pos,
         pvals=pvals,
         chrom="chr1",
