@@ -1,12 +1,11 @@
 """Test ancillary plotting utilities."""
+
 import pytest
 import matplotlib.pyplot as plt
 from arjun_plot import utils
 
 
-@pytest.mark.parametrize(
-    "test_in,test_seed,test_scale", [([-1, 0, 1], 42, 0.01)]
-)  # noqa
+@pytest.mark.parametrize("test_in,test_seed,test_scale", [([-1, 0, 1], 42, 0.01)])  # noqa
 def test_rand_jitter(test_in, test_seed, test_scale):
     """Testing random jitter."""
     jitter_res = utils.rand_jitter(test_in, scale=test_scale)

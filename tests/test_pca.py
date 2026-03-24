@@ -1,4 +1,5 @@
 """Test PCA functions."""
+
 import pytest
 import numpy as np
 from arjun_plot.pca import PCA

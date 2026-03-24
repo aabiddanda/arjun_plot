@@ -1,4 +1,5 @@
 """Unit testing for common statgen plots."""
+
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.stats import uniform

@@ -1,9 +1,14 @@
 import numpy as np
 import polars as pl
+from arjun_plot.utils import *
 
 
 def create_ideogram(chrom_df=None, scaling_factor=1e6, **kwargs):
 	"""
+
+    :param polars.DataFrame chrom_df: Input axis.
+    :param float scaling_factor: numpy array of p-values.
+
     Setup axes + rectangles for karyograms
 	"""
 	assert scaling_factor > 0
@@ -24,6 +29,7 @@ def create_ideogram(chrom_df=None, scaling_factor=1e6, **kwargs):
             axs[i-1].add_patch(plt.Rectangle((0, 0), l/scaling_factor, 1, ls="-", lw=1, ec="black", fc="none"))
             axs[i-1].plot([0,l/scaling_factor], [1,1], color='none')
         return fig, axs, m_size
+
 
 
 def plot_tracts(features_df, axs, scaling_factor=1e6, n_features=3, **kwargs):
