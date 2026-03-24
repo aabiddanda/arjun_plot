@@ -9,7 +9,8 @@ requires = [
     "Cartopy",
     "extension-helpers",
     "requests",
-    "cyvcf2"
+    "cyvcf2",
+    "polars"
 ]
 build-backend = "setuptools.build_meta"
 
@@ -19,8 +20,8 @@ name = "arjun_plot"
 description = "\"Personal plotting routines.\""
 keywords = ["plotting", "utilities"]
 classifiers = ["Development Status :: 3 - Alpha", "Intended Audience :: Science/Research", "Programming Language :: Python :: 3"]
-requires-python = ">= 3.9"
-dependencies = [ "numpy", "scipy", "pandas", "adjustText", "Cartopy", "cyvcf2"]
+requires-python = ">= 3.11"
+dependencies = [ "numpy", "scipy", "polars", "adjustText", "Cartopy", "cyvcf2"]
 dynamic = ["version"]
 authors = [{name = "Arjun Biddanda", email = "aabiddanda@gmail.com"}]
 
@@ -29,7 +30,7 @@ authors = [{name = "Arjun Biddanda", email = "aabiddanda@gmail.com"}]
 Homepage = "https://github.com/aabiddanda/arjun_plot"
 
 [project.optional-dependencies]
-tests = [ "pytest", "pytest-cov", "hypothesis", "flake8", "sphinx"]
+tests = [ "pytest", "pytest-cov", "pytest-xdist", "hypothesis"]
 
 [tool.setuptools]
 zip-safe = false

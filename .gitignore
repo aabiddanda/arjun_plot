@@ -5,3 +5,4 @@ build/
 .coverage
 docs/_build/
 _build/
+.venv/
