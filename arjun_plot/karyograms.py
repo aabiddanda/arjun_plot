@@ -4,10 +4,16 @@ from arjun_plot.utils import remove_border, remove_ticks
 
 
 def create_ideogram(chrom_df=None, scaling_factor=1e6, **kwargs):
-    """
-    :param polars.DataFrame chrom_df: Input axis.
-    :param float scaling_factor: numpy array of p-values.
-    Setup axes + rectangles for karyograms
+    """Create a whole-genome ideogram with one subplot row per autosome.
+
+    Draws a scaled rectangle for each of the 22 autosomes using the chromosome
+    lengths provided in ``chrom_df``.  All spines and ticks are removed so that
+    ancestry tracts or other features can be overlaid cleanly.
+
+    :param polars.DataFrame chrom_df: DataFrame with columns ``chrom`` (e.g. ``"chr1"``) and ``size`` (length in base-pairs).
+    :param float scaling_factor: Divisor applied to base-pair lengths before plotting (default 1e6 → lengths in Mb).
+    :returns: ``(fig, axs, m_size)`` — the figure, array of axes (one per chromosome), and the maximum chromosome length in base-pairs.
+    :rtype: tuple
     """
     assert scaling_factor > 0
     if chrom_df is None:
@@ -42,8 +48,12 @@ def create_ideogram(chrom_df=None, scaling_factor=1e6, **kwargs):
 
 
 def plot_tracts(features_df, axs, scaling_factor=1e6, n_features=3, **kwargs):
-    """
-    Plotting method for tracts
+    """Overlay ancestry tracts or other genomic interval features onto ideogram axes.
+
+    :param polars.DataFrame features_df: DataFrame with columns ``chrom``, ``start``, and ``end`` (positions in base-pairs).
+    :param list axs: List of matplotlib axes returned by :func:`create_ideogram`.
+    :param float scaling_factor: Same divisor used when creating the ideogram (default 1e6).
+    :param int n_features: Maximum number of feature tracks to display per chromosome.
     """
     for c in ["chrom", "start", "end"]:
         assert c in features_df.columns
