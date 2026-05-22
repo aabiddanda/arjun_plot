@@ -1,3 +1,5 @@
+[![CI](https://github.com/aabiddanda/arjun_plot/actions/workflows/ci.yml/badge.svg)](https://github.com/aabiddanda/arjun_plot/actions/workflows/ci.yml) [![Documentation](https://github.com/aabiddanda/arjun_plot/actions/workflows/documentation.yaml/badge.svg)](https://github.com/aabiddanda/arjun_plot/actions/workflows/documentation.yaml) [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://www.python.org/downloads/) [![Code style: Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+
 # arjun_plot: customized plotting routines in matplotlib
 
 ## Rationale
