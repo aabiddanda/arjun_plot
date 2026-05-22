@@ -4,7 +4,6 @@ import numpy as np
 from matplotlib import cm
 from adjustText import adjust_text
 from scipy.optimize import curve_fit
-import pandas as pd
 
 
 class PCA:
@@ -25,14 +24,17 @@ class PCA:
         :param string eval_file: File with eigenvalues in smartpca format.
 
         """
-        df = pd.read_csv(evec_file, sep=r"\s+")
-        evecs = df.values[:, :-1]
-        pop_labels = df.values[:, -1]
-        indiv_labels = df.index.values
+        with open(evec_file) as f:
+            header = f.readline()
+            lines = [line for line in f if line.strip()]
         if eval_file is None:
-            evals = df.columns[1:].astype(np.float32)
+            evals = np.array(header.split()[1:], dtype=np.float32)
         else:
             evals = np.loadtxt(eval_file)
+        rows = [line.split() for line in lines]
+        indiv_labels = np.array([r[0] for r in rows])
+        pop_labels = np.array([r[-1] for r in rows])
+        evecs = np.array([[float(x) for x in r[1:-1]] for r in rows])
         self.evals = evals
         self.evecs = evecs
         self.indiv_labels = indiv_labels
@@ -45,9 +47,10 @@ class PCA:
         :param string eval_file: File with eigenvalues in plink format.
         """
         evals = np.loadtxt(eval_file)
-        pcs = pd.read_csv(evec_file, sep=r"\s+", header=None, engine="python")
-        evecs = pcs.values[:, 2:].astype(np.float32)
-        indiv_labels = pcs.values[:, 0].astype(str)
+        with open(evec_file) as f:
+            rows = [line.split() for line in f if line.strip()]
+        indiv_labels = np.array([r[0] for r in rows])
+        evecs = np.array([[float(x) for x in r[2:]] for r in rows], dtype=np.float32)
         # Setting the underlying values after reading this
         self.evecs = evecs
         self.evals = evals

@@ -1,6 +1,7 @@
 """Test ancillary plotting utilities."""
 
 import pytest
+import numpy as np
 import matplotlib.pyplot as plt
 from arjun_plot import utils
 
@@ -53,3 +54,20 @@ def test_label_multipanel():
     with pytest.raises(AssertionError):
         _, axs = plt.subplots(1, 2)
         utils.label_multipanel(axs, labels)
+
+
+def test_rand_jitter_with_seed():
+    """Testing random jitter with a fixed seed is deterministic."""
+    arr = [-1, 0, 1]
+    r1 = utils.rand_jitter(arr, scale=0.01, seed=42)
+    r2 = utils.rand_jitter(arr, scale=0.01, seed=42)
+    np.testing.assert_array_equal(r1, r2)
+
+
+def test_swarm():
+    """Testing swarm plot coordinate transform."""
+    arr = np.linspace(0, 1, 60)
+    x = utils.swarm(arr)
+    assert x.shape == arr.shape
+    x2 = utils.swarm(arr, nbins=5, width=2.0)
+    assert x2.shape == arr.shape

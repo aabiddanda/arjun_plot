@@ -7,7 +7,7 @@
 """Functions for plotting results from ADMIXTURE/STRUCTURE."""
 
 import numpy as np
-import pandas as pd
+import polars as pl
 import scipy.cluster.hierarchy
 import scipy.cluster.vq
 import scipy.stats
@@ -99,21 +99,25 @@ def plot_k(ax, Q, lbls, order, colors, subset=None, spacing=2, bar_width=1, **kw
             Q[idx] = m
             idx += 1
 
-    # Changing things to a pandas dataframe for plotting
     ancestry_matrix = Q
-    ancestry_matrix = pd.DataFrame(ancestry_matrix)
-    ancestry_matrix.plot.bar(
-        ax=ax,
-        stacked=True,
-        legend=False,
-        width=bar_width,
-        linewidth=0,
-        rasterized=True,
-        color=colors,
-    )
+    n_pops = ancestry_matrix.shape[1]
+    x = np.arange(ancestry_matrix.shape[0])
+    bottom = np.zeros(ancestry_matrix.shape[0])
+    for k in range(n_pops):
+        ax.bar(
+            x,
+            ancestry_matrix[:, k],
+            bottom=bottom,
+            width=bar_width,
+            linewidth=0,
+            rasterized=True,
+            color=colors[k],
+        )
+        bottom += ancestry_matrix[:, k]
 
     # Setting plotting parameters
     ax.set_yticklabels([])
+    ax.set_xticks(x)
     ax.set_xticklabels(labels_ordered, **kwargs)
     ax.tick_params(axis="both", which="both", length=0)
     ax.patch.set_visible(False)
@@ -122,4 +126,4 @@ def plot_k(ax, Q, lbls, order, colors, subset=None, spacing=2, bar_width=1, **kw
     ax.spines["bottom"].set_visible(False)
     ax.spines["left"].set_visible(False)
 
-    return (ax, ancestry_matrix)
+    return (ax, pl.DataFrame(ancestry_matrix))
