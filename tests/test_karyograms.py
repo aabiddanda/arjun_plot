@@ -3,7 +3,12 @@
 import pytest
 import polars as pl
 import matplotlib.pyplot as plt
-from arjun_plot.karyograms import create_ideogram, draw_regions, plot_tracts
+from arjun_plot.karyograms import (
+    create_ideogram,
+    draw_regions,
+    plot_meta_karyogram,
+    plot_tracts,
+)
 
 
 @pytest.fixture
@@ -191,3 +196,82 @@ def test_plot_tracts_missing_columns(ideogram):
     bad_df = pl.DataFrame({"chrom": ["chr1"], "begin": [0], "end": [1000]})
     with pytest.raises(AssertionError):
         plot_tracts(bad_df, axs, facecolor="blue", edgecolor="none", label="x")
+
+
+# ---------------------------------------------------------------------------
+# plot_meta_karyogram
+# ---------------------------------------------------------------------------
+
+
+@pytest.fixture
+def archaic_tracts():
+    """Synthetic archaic introgression tracts across three categories."""
+    rng_chroms = ["chr1"] * 6 + ["chr7"] * 4 + ["chr22"] * 2
+    starts = [
+        10_000_000,
+        50_000_000,
+        80_000_000,
+        120_000_000,
+        160_000_000,
+        190_000_000,
+        15_000_000,
+        40_000_000,
+        70_000_000,
+        95_000_000,
+        5_000_000,
+        20_000_000,
+    ]
+    ends = [s + 200_000 for s in starts]
+    categories = (
+        ["Neanderthal", "Neanderthal", "Denisovan", "Ghost", "Neanderthal", "Ghost"]
+        + ["Denisovan", "Neanderthal", "Ghost", "Neanderthal"]
+        + ["Neanderthal", "Denisovan"]
+    )
+    return pl.DataFrame(
+        {"chrom": rng_chroms, "start": starts, "end": ends, "category": categories}
+    )
+
+
+def test_plot_meta_karyogram_auto_colors(chrom_df, archaic_tracts):
+    """Meta-karyogram renders without error and returns one legend handle per category."""
+    fig, axs, handles = plot_meta_karyogram(archaic_tracts, chrom_df)
+    assert len(axs) == 22
+    assert len(handles) == 3  # Denisovan, Ghost, Neanderthal
+    assert {h.get_label() for h in handles} == {"Neanderthal", "Denisovan", "Ghost"}
+    plt.close(fig)
+
+
+def test_plot_meta_karyogram_explicit_color_map(chrom_df, archaic_tracts):
+    """Explicit color_map is respected and returned in legend handles."""
+    cmap = {"Neanderthal": "steelblue", "Denisovan": "darkorange", "Ghost": "crimson"}
+    fig, axs, handles = plot_meta_karyogram(archaic_tracts, chrom_df, color_map=cmap)
+    handle_colors = {h.get_label(): h.get_color() for h in handles}
+    assert handle_colors["Neanderthal"] == "steelblue"
+    assert handle_colors["Ghost"] == "crimson"
+    plt.close(fig)
+
+
+def test_plot_meta_karyogram_ticks_added(chrom_df, archaic_tracts):
+    """LineCollections are added to chromosome axes that have features."""
+    fig, axs, _ = plot_meta_karyogram(archaic_tracts, chrom_df)
+    # chr1 (index 0) has 6 segments — at least one LineCollection per category
+    assert len(axs[0].collections) > 0
+    # chr22 (index 21) has 2 segments
+    assert len(axs[21].collections) > 0
+    # chr5 (index 4) has no segments — no collections added beyond ideogram baseline
+    assert len(axs[4].collections) == 0
+    plt.close(fig)
+
+
+def test_plot_meta_karyogram_missing_column(chrom_df, archaic_tracts):
+    """Missing required column raises AssertionError."""
+    bad_df = archaic_tracts.drop("category")
+    with pytest.raises(AssertionError, match="category"):
+        plot_meta_karyogram(bad_df, chrom_df)
+
+
+def test_plot_meta_karyogram_incomplete_color_map(chrom_df, archaic_tracts):
+    """Partial color_map (missing a category) raises AssertionError."""
+    incomplete = {"Neanderthal": "steelblue"}  # Ghost and Denisovan missing
+    with pytest.raises(AssertionError, match="color_map"):
+        plot_meta_karyogram(archaic_tracts, chrom_df, color_map=incomplete)
