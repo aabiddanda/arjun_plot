@@ -261,9 +261,10 @@ def test_plot_meta_karyogram_explicit_color_map(chrom_df, archaic_tracts):
     """Explicit color_map is respected and returned in legend handles."""
     cmap = {"Neanderthal": "steelblue", "Denisovan": "darkorange", "Ghost": "crimson"}
     fig, axs, handles = plot_meta_karyogram(archaic_tracts, chrom_df, color_map=cmap)
-    handle_colors = {h.get_label(): h.get_color() for h in handles}
-    assert handle_colors["Neanderthal"] == "steelblue"
-    assert handle_colors["Ghost"] == "crimson"
+    import matplotlib.colors as mcolors
+    handle_colors = {h.get_label(): h.get_facecolor() for h in handles}
+    assert handle_colors["Neanderthal"] == mcolors.to_rgba("steelblue")
+    assert handle_colors["Ghost"] == mcolors.to_rgba("crimson")
     plt.close(fig)
 
 

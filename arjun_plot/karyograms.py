@@ -3,8 +3,7 @@ import warnings
 import matplotlib as mpl
 import polars as pl
 import matplotlib.pyplot as plt
-import matplotlib.lines as mlines
-from matplotlib.collections import LineCollection
+from matplotlib.collections import PatchCollection
 from matplotlib.patches import Patch
 from arjun_plot.utils import remove_border, remove_ticks
 
@@ -211,7 +210,6 @@ def plot_meta_karyogram(
     color_map=None,
     cmap="tab10",
     scaling_factor=1e6,
-    linewidth=0.5,
     alpha=0.6,
     **kwargs,
 ):
@@ -225,9 +223,11 @@ def plot_meta_karyogram(
     bioRxiv), where Neanderthal, Denisovan, and Ghost archaic segments are overlaid
     on a whole-genome ideogram.
 
-    Ticks are rendered with :class:`~matplotlib.collections.LineCollection` so the
-    function stays fast even for millions of segments.  Each tick is drawn at the
-    midpoint of its interval and spans the full height of the chromosome axis band.
+    Each unique category occupies an equal horizontal band of the chromosome axis
+    (``1 / n_categories`` of the total height), and each segment is drawn as a filled
+    rectangle spanning its actual genomic coordinates rather than a tick at the midpoint.
+    Rectangles are rendered via :class:`~matplotlib.collections.PatchCollection` so the
+    function remains fast for large datasets.
 
     :param polars.DataFrame features_df: DataFrame with columns ``chrom``, ``start``,
         ``end`` (base-pair coordinates), and a category column (see ``category_col``).
@@ -247,12 +247,11 @@ def plot_meta_karyogram(
         colormap is accepted.
     :param float scaling_factor: Divisor applied to base-pair coordinates before
         plotting (default 1e6 → Mb).
-    :param float linewidth: Width of each tick mark in points (default 0.5).
-    :param float alpha: Opacity of ticks (default 0.6).
+    :param float alpha: Opacity of rectangles (default 0.6).
     :param kwargs: Additional keyword arguments forwarded to :func:`create_ideogram`
         (e.g. ``figsize``).
     :returns: ``(fig, axs, legend_handles)`` — the figure, list of axes (one per
-        chromosome), and a list of :class:`~matplotlib.lines.Line2D` legend handles
+        chromosome), and a list of :class:`~matplotlib.patches.Patch` legend handles
         (one per category, ready to pass to ``ax.legend()``).
     :rtype: tuple
     """
@@ -280,23 +279,23 @@ def plot_meta_karyogram(
         if len(chrom_feats) == 0:
             continue
 
-        for category, color in color_map.items():
+        n_cats = len(color_map)
+        for i, (category, color) in enumerate(color_map.items()):
             cat_feats = chrom_feats.filter(pl.col(category_col) == category)
             if len(cat_feats) == 0:
                 continue
-            mids = (
-                (cat_feats["start"].to_numpy() + cat_feats["end"].to_numpy())
-                / 2
-                / scaling_factor
-            )
-            segments = [[(m, 0.0), (m, 1.0)] for m in mids]
-            lc = LineCollection(
-                segments, colors=color, linewidths=linewidth, alpha=alpha
-            )
-            ax.add_collection(lc)
+            y_lo = i / n_cats
+            h = 1 / n_cats
+            starts = cat_feats["start"].to_numpy() / scaling_factor
+            ends = cat_feats["end"].to_numpy() / scaling_factor
+            patches = [
+                plt.Rectangle((s, y_lo), e - s, h) for s, e in zip(starts, ends)
+            ]
+            pc = PatchCollection(patches, facecolor=color, edgecolor="none", alpha=alpha)
+            ax.add_collection(pc)
 
     legend_handles = [
-        mlines.Line2D([], [], color=color, linewidth=2, label=cat)
+        Patch(facecolor=color, edgecolor="none", label=cat)
         for cat, color in color_map.items()
     ]
     return fig, axs, legend_handles
