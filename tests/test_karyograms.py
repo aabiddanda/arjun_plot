@@ -61,9 +61,11 @@ def test_create_ideogram(chrom_df):
 
 
 def test_create_ideogram_no_chrom_df():
-    """Omitting chrom_df raises ValueError."""
-    with pytest.raises(ValueError):
-        create_ideogram(chrom_df=None)
+    """Omitting chrom_df falls back to hg38 sizes and returns 22 axes."""
+    fig, axs, m_size = create_ideogram()
+    assert len(axs) == 22
+    assert m_size == 248_956_422  # chr1 is largest in hg38
+    plt.close(fig)
 
 
 def test_create_ideogram_missing_columns():
@@ -132,6 +134,20 @@ def test_draw_regions_unparseable_chrom_warns(ideogram, neanderthal_deserts):
             alpha=0.3,
             color="steelblue",
         )
+
+
+def test_draw_regions_scaling_factor(ideogram, neanderthal_deserts):
+    """scaling_factor is forwarded correctly; mismatched value shifts spans."""
+    _, axs, _ = ideogram
+    # Draw the same region with the default scaling and with 1e3 (kb) scaling.
+    # Both calls should succeed; the kb-scaled span should be 1000x wider.
+    baseline = len(axs[2].patches)
+    draw_regions(axs, df=neanderthal_deserts, scaling_factor=1e6,
+                 categories=["conservative"], alpha=0.2, color="blue")
+    draw_regions(axs, df=neanderthal_deserts, scaling_factor=1e3,
+                 categories=["conservative"], alpha=0.2, color="red")
+    # Two extra patches on chr3 (index 2) per call × 2 calls = 4 new patches
+    assert len(axs[2].patches) == baseline + 4
 
 
 # ---------------------------------------------------------------------------
@@ -275,3 +291,11 @@ def test_plot_meta_karyogram_incomplete_color_map(chrom_df, archaic_tracts):
     incomplete = {"Neanderthal": "steelblue"}  # Ghost and Denisovan missing
     with pytest.raises(AssertionError, match="color_map"):
         plot_meta_karyogram(archaic_tracts, chrom_df, color_map=incomplete)
+
+
+def test_plot_meta_karyogram_no_chrom_df(archaic_tracts):
+    """Omitting chrom_df falls back to hg38 sizes without error."""
+    fig, axs, handles = plot_meta_karyogram(archaic_tracts)
+    assert len(axs) == 22
+    assert len(handles) == 3
+    plt.close(fig)

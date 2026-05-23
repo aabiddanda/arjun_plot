@@ -10,6 +10,20 @@ from arjun_plot.utils import remove_border, remove_ticks
 
 _DEFAULT_CHROMS = [f"chr{i}" for i in range(1, 23)]
 
+# GRCh38/hg38 primary-assembly chromosome lengths (base-pairs).
+_hg38_chrom_sizes = pl.DataFrame(
+    {
+        "chrom": [f"chr{i}" for i in range(1, 23)] + ["chrX", "chrY"],
+        "size": [
+            248_956_422, 242_193_529, 198_295_559, 190_214_555, 181_538_259,
+            170_805_979, 159_345_973, 145_138_636, 138_394_717, 133_797_422,
+            135_086_622, 133_275_309, 114_364_328, 107_043_718, 101_991_189,
+             90_338_345,  83_257_441,  80_373_285,  58_617_616,  64_444_167,
+             46_709_983,  50_818_468, 156_040_895,  57_227_415,
+        ],
+    }
+)
+
 
 def _resolve_color_map(categories, color_map, cmap):
     """Return a category → colour dict, sampling from *cmap* when *color_map* is None."""
@@ -29,8 +43,9 @@ def create_ideogram(chrom_df=None, chroms=None, scaling_factor=1e6, **kwargs):
     ``chrom_df``.  All spines and ticks are removed so that ancestry tracts or
     other features can be overlaid cleanly.
 
-    :param polars.DataFrame chrom_df: DataFrame with columns ``chrom`` (e.g.
-        ``"chr1"``) and ``size`` (length in base-pairs).
+    :param polars.DataFrame | None chrom_df: DataFrame with columns ``chrom``
+        (e.g. ``"chr1"``) and ``size`` (length in base-pairs).  Defaults to
+        GRCh38/hg38 primary-assembly lengths when ``None``.
     :param list | None chroms: Ordered list of chromosome names to plot (default:
         the 22 autosomes ``["chr1", ..., "chr22"]``).  Pass e.g.
         ``["chr1", ..., "chr22", "chrX"]`` to include the X chromosome.
@@ -43,7 +58,7 @@ def create_ideogram(chrom_df=None, chroms=None, scaling_factor=1e6, **kwargs):
     """
     assert scaling_factor > 0
     if chrom_df is None:
-        raise ValueError("Chromosome lengths need to be specified")
+        chrom_df = _hg38_chrom_sizes
     assert "chrom" in chrom_df.columns
     assert "size" in chrom_df.columns
 
@@ -80,7 +95,7 @@ def create_ideogram(chrom_df=None, chroms=None, scaling_factor=1e6, **kwargs):
     return fig, axs, m_size
 
 
-def draw_regions(axs, df=None, chroms=None, categories=["conservative"], **kwargs):
+def draw_regions(axs, df=None, chroms=None, scaling_factor=1e6, categories=["conservative"], **kwargs):
     """Shade genomic regions (e.g. Neanderthal deserts) on existing ideogram axes.
 
     Filters ``df`` to rows whose ``type`` column matches any entry in ``categories``
@@ -93,6 +108,9 @@ def draw_regions(axs, df=None, chroms=None, categories=["conservative"], **kwarg
     :param list | None chroms: Ordered list of chromosome names corresponding to
         *axs* (default: the 22 autosomes).  Must match the *chroms* used when the
         ideogram was created.
+    :param float scaling_factor: Same divisor used when creating the ideogram
+        (default 1e6 → Mb).  Must match the value passed to :func:`create_ideogram`
+        so shaded regions land at the correct positions.
     :param list categories: Category labels in ``df["type"]`` to include (default
         ``["conservative"]``).
     :param kwargs: Extra keyword arguments forwarded to
@@ -117,7 +135,7 @@ def draw_regions(axs, df=None, chroms=None, categories=["conservative"], **kwarg
         if chrom not in chrom_to_idx:
             warnings.warn(f"{chrom} is not in the provided chroms list, skipping!")
             continue
-        axs[chrom_to_idx[chrom]].axvspan(start / 1e6, end / 1e6, **kwargs)
+        axs[chrom_to_idx[chrom]].axvspan(start / scaling_factor, end / scaling_factor, **kwargs)
     return axs
 
 
@@ -187,7 +205,7 @@ def plot_tracts(
 
 def plot_meta_karyogram(
     features_df,
-    chrom_df,
+    chrom_df=None,
     chroms=None,
     category_col="category",
     color_map=None,
@@ -213,8 +231,9 @@ def plot_meta_karyogram(
 
     :param polars.DataFrame features_df: DataFrame with columns ``chrom``, ``start``,
         ``end`` (base-pair coordinates), and a category column (see ``category_col``).
-    :param polars.DataFrame chrom_df: Chromosome size DataFrame passed to
-        :func:`create_ideogram` (requires columns ``chrom`` and ``size``).
+    :param polars.DataFrame | None chrom_df: Chromosome size DataFrame passed to
+        :func:`create_ideogram` (requires columns ``chrom`` and ``size``).  Defaults
+        to GRCh38/hg38 primary-assembly lengths when ``None``.
     :param list | None chroms: Ordered list of chromosome names to plot (default:
         the 22 autosomes).  Pass e.g. ``["chr1", ..., "chr22", "chrX"]`` to include
         the X chromosome.
