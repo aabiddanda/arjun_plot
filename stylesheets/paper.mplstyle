@@ -1,3 +1,149 @@
-font.sans-serif: Arial
-figure.facecolor: w
-figure.autolayout: True
+##
+## academic.mplstyle
+## Matplotlib stylesheet for figures in academic research articles.
+##
+## Designed for population / statistical genetics publications (Nature, Nature Genetics,
+## Genetics, PNAS, eLife, etc.).  Inspired by arjun_plot and Biddanda et al. figures.
+##
+## Font: Arial (sans-serif, widely accepted by journals, editable in Illustrator/Inkscape)
+## Colorblind-aware palette as default cycle.
+## Output-ready at 300 dpi; vectors preferred.
+##
+## Usage:
+##   import matplotlib.pyplot as plt
+##   plt.style.use("academic.mplstyle")
+##
+## ─── FIGURE ────────────────────────────────────────────────────────────────
+figure.figsize        : 3.5, 3.0       ## single-column width (inches); adjust per journal
+figure.dpi            : 150            ## screen preview; use savefig.dpi for output
+figure.facecolor      : white
+figure.edgecolor      : white
+figure.frameon        : True
+
+## ─── SAVE ──────────────────────────────────────────────────────────────────
+savefig.dpi           : 300
+savefig.format        : pdf            ## vector by default; switch to 'svg' for Illustrator
+savefig.bbox          : tight
+savefig.pad_inches    : 0.05
+savefig.transparent   : False
+savefig.facecolor     : white
+savefig.edgecolor     : white
+
+## ─── FONT ──────────────────────────────────────────────────────────────────
+font.family           : sans-serif
+font.sans-serif       : Arial, Helvetica, DejaVu Sans
+font.size             : 7             ## base; journals typically want 6-8 pt
+text.usetex           : True         ## keep False so Arial renders without LaTeX
+
+## ─── AXES ──────────────────────────────────────────────────────────────────
+axes.facecolor        : white
+axes.edgecolor        : black
+axes.linewidth        : 0.8
+axes.labelsize        : 7
+axes.titlesize        : 7
+axes.titlepad         : 4
+axes.labelpad         : 3
+axes.spines.top       : False         ## cleaner look: no top/right border
+axes.spines.right     : False
+axes.spines.left      : True
+axes.spines.bottom    : True
+axes.axisbelow        : True          ## grid lines behind data
+axes.grid             : False         ## off by default; enable per-plot as needed
+axes.formatter.use_mathtext : True
+
+## Okabe-Ito colorblind-safe palette (Okabe & Ito 2008; Wong, Nature Methods 2011)
+## Explicitly recommended by Nature journals for all scientific figures.
+## Distinguishable under protanopia, deuteranopia, and tritanopia.
+## Order: warm/cool alternating so any 2–4 color subset is maximally distinct.
+##   E69F00  orange          0072B2  blue
+##   009E73  bluish green    D55E00  vermillion
+##   56B4E9  sky blue        CC79A7  reddish purple
+##   F0E442  yellow          404040  dark gray (replaces black for white-bg legibility)
+axes.prop_cycle : cycler('color', ['E69F00', '0072B2', '009E73', 'D55E00', '56B4E9', 'CC79A7', 'F0E442', '404040'])
+
+## ─── TICKS ─────────────────────────────────────────────────────────────────
+xtick.labelsize       : 6
+xtick.direction       : out
+xtick.major.size      : 3.0
+xtick.major.width     : 0.8
+xtick.minor.size      : 1.5
+xtick.minor.width     : 0.6
+xtick.minor.visible   : False
+xtick.top             : False
+xtick.bottom          : True
+xtick.major.pad       : 2
+xtick.color           : black
+
+ytick.labelsize       : 6
+ytick.direction       : out
+ytick.major.size      : 3.0
+ytick.major.width     : 0.8
+ytick.minor.size      : 1.5
+ytick.minor.width     : 0.6
+ytick.minor.visible   : False
+ytick.left            : True
+ytick.right           : False
+ytick.major.pad       : 2
+ytick.color           : black
+
+## ─── LINES ─────────────────────────────────────────────────────────────────
+lines.linewidth       : 1.0
+lines.markersize      : 4
+lines.markeredgewidth : 0.5
+
+## ─── PATCHES (bars, boxes, etc.) ───────────────────────────────────────────
+patch.linewidth       : 0.5
+patch.facecolor       : E69F00        ## Okabe-Ito orange
+patch.edgecolor       : black
+patch.force_edgecolor : True
+
+## ─── SCATTER ───────────────────────────────────────────────────────────────
+scatter.marker        : o
+scatter.edgecolors    : face
+
+## ─── GRID ──────────────────────────────────────────────────────────────────
+grid.color            : 0.85
+grid.linestyle        : --
+grid.linewidth        : 0.5
+grid.alpha            : 0.7
+
+## ─── LEGEND ────────────────────────────────────────────────────────────────
+legend.frameon        : False
+legend.fontsize       : 6
+legend.title_fontsize : 6
+legend.handlelength   : 1.5
+legend.handleheight   : 0.7
+legend.handletextpad  : 0.4
+legend.borderpad      : 0.3
+legend.labelspacing   : 0.3
+legend.columnspacing  : 1.0
+
+## ─── ERRORBAR ──────────────────────────────────────────────────────────────
+errorbar.capsize      : 2
+
+## ─── BOXPLOT ───────────────────────────────────────────────────────────────
+boxplot.flierprops.markersize  : 3
+boxplot.flierprops.linewidth   : 0.5
+boxplot.boxprops.linewidth     : 0.8
+boxplot.whiskerprops.linewidth : 0.8
+boxplot.capprops.linewidth     : 0.8
+boxplot.medianprops.linewidth  : 1.2
+boxplot.medianprops.color      : 0072B2
+
+## ─── HISTOGRAM ─────────────────────────────────────────────────────────────
+hist.bins             : auto
+
+## ─── IMAGE ─────────────────────────────────────────────────────────────────
+image.cmap            : viridis
+image.interpolation   : nearest
+image.aspect          : equal
+
+## ─── MATH TEXT ─────────────────────────────────────────────────────────────
+mathtext.fontset      : custom
+mathtext.rm           : Arial
+mathtext.it           : Arial:italic
+mathtext.bf           : Arial:bold
+
+## ─── PDF / SVG OUTPUT ──────────────────────────────────────────────────────
+pdf.fonttype          : 42            ## embed TrueType; keeps fonts editable in Illustrator
+svg.fonttype          : none          ## embed as text in SVG

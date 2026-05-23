@@ -1,2 +1,0 @@
-- General plots for spatial data
-- Include common stylesheets for plots useful in talks with font-scaling
