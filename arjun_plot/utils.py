@@ -1,4 +1,5 @@
 """Utility plotting functions in matplotlib."""
+
 import numpy as np
 
 

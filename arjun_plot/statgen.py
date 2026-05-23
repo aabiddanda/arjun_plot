@@ -371,7 +371,7 @@ def plot_gene_region_worker(
         f"https://api.genome.ucsc.edu/getData/track?genome={build};track={track};chrom={chrom};start={position_min};end={position_max}",  # noqa
         headers={"Content-Type": "application/json"},
     )
-    results = req.json()["ncbiRefSeq"]
+    results = req.json()[f"{track}"]
     genes = {}
     for g in results:
         # Want to avoid repeats & will get the longest transcript.
@@ -448,10 +448,13 @@ def plot_gene_region_worker(
     return ax
 
 
-def gene_plot(ax, chrom="chr1", position_min=1e6, position_max=2e6, **kwargs):
+def gene_plot(
+    ax, chrom="chr1", track="ncbiRefSeq", position_min=1e6, position_max=2e6, **kwargs
+):
     """Plot the genes within a region."""
     ax = plot_gene_region_worker(
         ax=ax,
+        track=track,
         chrom=chrom,
         position_min=int(np.round(position_min)),
         position_max=int(np.round(position_max)),
