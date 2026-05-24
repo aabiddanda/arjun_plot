@@ -27,7 +27,7 @@ jobs:
         run: uv venv
 
       - name: Install dependencies
-        run: uv pip install ".[tests]" matplotlib
+        run: uv pip install ".[tests]"
 
       - name: Run tests
         run: uv run pytest tests/ -v --cov=arjun_plot --cov-report=term-missing
