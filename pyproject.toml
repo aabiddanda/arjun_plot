@@ -21,7 +21,7 @@ description = "\"Personal plotting routines.\""
 keywords = ["plotting", "utilities"]
 classifiers = ["Development Status :: 3 - Alpha", "Intended Audience :: Science/Research", "Programming Language :: Python :: 3"]
 requires-python = ">= 3.11"
-dependencies = [ "numpy", "scipy", "polars", "adjustText", "Cartopy", "cyvcf2"]
+dependencies = [ "numpy", "scipy", "polars", "adjustText", "Cartopy", "cyvcf2", "matplotlib", "requests"]
 dynamic = ["version"]
 authors = [{name = "Arjun Biddanda", email = "aabiddanda@gmail.com"}]
 
