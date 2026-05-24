@@ -24,14 +24,18 @@ jobs:
 
       - name: Set up uv
         uses: astral-sh/setup-uv@v5
-        with:
-          python-version: '3.11'
+
+      - name: Set up Python
+        run: uv python install 3.11
+
+      - name: Create virtual environment
+        run: uv venv
 
       - name: Install dependencies
-        run: uv pip install --system sphinx sphinx_rtd_theme myst_parser "."
+        run: uv pip install sphinx sphinx_rtd_theme myst_parser "."
 
       - name: Sphinx build
-        run: sphinx-build docs _build
+        run: uv run sphinx-build docs _build
 
       - name: Upload Pages artifact
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
