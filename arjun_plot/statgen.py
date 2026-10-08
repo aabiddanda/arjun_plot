@@ -323,6 +323,102 @@ def overlap_labels(
         )
 
 
+def fetch_gene_annotations(
+    build="hg38",
+    track="ncbiRefSeq",
+    chrom="chr1",
+    position_min=1000000,
+    position_max=1100000,
+    gene_file=None,
+    genepred_cols=(
+        "bin",
+        "name",
+        "chrom",
+        "strand",
+        "txStart",
+        "txEnd",
+        "cdsStart",
+        "cdsEnd",
+        "exonCount",
+        "exonStarts",
+        "exonEnds",
+        "score",
+        "name2",
+        "cdsStartStat",
+        "cdsEndStat",
+        "exonFrames",
+    ),
+):
+    """Fetch gene records overlapping a region, from UCSC or a local file.
+
+    Args:
+        build (str): genome build and version.
+        track (str): UCSC track name (used for remote queries / JSON lookup).
+        chrom (str): chromosome to query.
+        position_min (int): minimum position.
+        position_max (int): maximum position.
+        gene_file (str or None): path to a local annotation file. If None, the
+            UCSC REST API is queried. Supported formats are ``*.json[.gz]``
+            (a saved UCSC API response) and ``*.txt[.gz]`` / ``*.tsv[.gz]``
+            (a UCSC genePred table dump, e.g. ncbiRefSeq.txt.gz).
+        genepred_cols (tuple): column names of a local genePred table. The default
+            matches the UCSC ncbiRefSeq / refGene table dumps; must include
+            chrom, strand, txStart, txEnd, exonStarts, exonEnds, and name2.
+
+    Returns:
+        records (list): gene records as dicts with UCSC field names (name2, txStart, ...).
+
+    """
+    if gene_file is None:
+        import requests
+
+        req = requests.get(
+            f"https://api.genome.ucsc.edu/getData/track?genome={build};track={track};chrom={chrom};start={position_min};end={position_max}",  # noqa
+            headers={"Content-Type": "application/json"},
+        )
+        req.raise_for_status()
+        return req.json()[track]
+
+    import gzip
+    import json
+    from pathlib import Path
+
+    gene_file = Path(gene_file)
+    if not gene_file.is_file():
+        raise FileNotFoundError(f"{gene_file} does not exist!")
+    opener = gzip.open if gene_file.suffix == ".gz" else open
+    suffixes = gene_file.suffixes
+
+    if ".json" in suffixes:
+        with opener(gene_file, "rt") as fp:
+            data = json.load(fp)
+        # Accept either a raw API response or a bare list of records
+        records = data[track] if isinstance(data, dict) else data
+    elif ".txt" in suffixes or ".tsv" in suffixes:
+        records = []
+        with opener(gene_file, "rt") as fp:
+            for line in fp:
+                if line.startswith("#") or not line.strip():
+                    continue
+                g = dict(zip(genepred_cols, line.rstrip("\n").split("\t")))
+                if g["chrom"] != chrom:
+                    continue
+                g["txStart"] = int(g["txStart"])
+                g["txEnd"] = int(g["txEnd"])
+                records.append(g)
+    else:
+        raise ValueError(f"Unsupported annotation file format: {gene_file}")
+
+    # Local files may span the whole genome, so restrict to the window
+    return [
+        g
+        for g in records
+        if g.get("chrom", chrom) == chrom
+        and g["txEnd"] >= position_min
+        and g["txStart"] <= position_max
+    ]
+
+
 def plot_gene_region_worker(
     ax,
     build="hg38",
@@ -334,6 +430,7 @@ def plot_gene_region_worker(
     scaling_factor=0.015,
     fontsize=6,
     name_filt=[],
+    gene_file=None,
 ):
     """Plot genes and exons.
 
@@ -349,6 +446,7 @@ def plot_gene_region_worker(
         scaling_factor (float): scaling factor for text-labels (larger indicates less overlap).
         fontsize (float): fontsize of gene names.
         name_filt (list): list of regex elements to filter gene names by.
+        gene_file (str or None): local annotation file (see fetch_gene_annotations); if None, query the UCSC API.
 
     Returns:
         ax (matplotlib.axis): axis containing the gene-region being plotted.
@@ -363,15 +461,17 @@ def plot_gene_region_worker(
     assert yoff > 0
     assert scaling_factor > 0
     assert fontsize > 0
-    import requests
     import re
 
     # Organize the gene-lists
-    req = requests.get(
-        f"https://api.genome.ucsc.edu/getData/track?genome={build};track={track};chrom={chrom};start={position_min};end={position_max}",  # noqa
-        headers={"Content-Type": "application/json"},
+    results = fetch_gene_annotations(
+        build=build,
+        track=track,
+        chrom=chrom,
+        position_min=position_min,
+        position_max=position_max,
+        gene_file=gene_file,
     )
-    results = req.json()[f"{track}"]
     genes = {}
     for g in results:
         # Want to avoid repeats & will get the longest transcript.
@@ -449,15 +549,22 @@ def plot_gene_region_worker(
 
 
 def gene_plot(
-    ax, chrom="chr1", track="ncbiRefSeq", position_min=1e6, position_max=2e6, **kwargs
+    ax,
+    chrom="chr1",
+    track="ncbiRefSeq",
+    position_min=1e6,
+    position_max=2e6,
+    gene_file=None,
+    **kwargs,
 ):
-    """Plot the genes within a region."""
+    """Plot the genes within a region (from UCSC, or a local file if `gene_file` is set)."""
     ax = plot_gene_region_worker(
         ax=ax,
         track=track,
         chrom=chrom,
         position_min=int(np.round(position_min)),
         position_max=int(np.round(position_max)),
+        gene_file=gene_file,
         **kwargs,
     )
     ax.set_yticks([])
